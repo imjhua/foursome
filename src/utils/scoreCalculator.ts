@@ -38,11 +38,9 @@ export const calculateTeamTotals = (scorecards: Scorecard[], teams: Team[]) => {
     if (teamScorecard) {
       // displayType이 있는 경우만 카운트 (없으면 0)
       const counts = { doublepar: 0, eagle: 0, birdie: 0, par: 0, bogey: 0 };
-      console.log(teamScorecard);
       teamScorecard.holes.forEach(hole => {
         if (typeof hole.displayType === 'string') {
           const type = hole.displayType;
-          console.log(type);
           
           if (type === 'eagle') counts.eagle++;
           if (type === 'birdie') counts.birdie++;
@@ -51,7 +49,6 @@ export const calculateTeamTotals = (scorecards: Scorecard[], teams: Team[]) => {
           if (type === 'doublepar') counts.doublepar++;
         }
       });
-      console.log(counts);
       
       teamTotals[team.id] = { ...counts, teamName: team.name };
     }

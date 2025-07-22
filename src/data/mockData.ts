@@ -43,30 +43,30 @@ const standardPars = [4, 3, 4, 5, 4, 3, 4, 4, 5, 4, 3, 4, 5, 4, 3, 4, 4, 5];
 // 랜덤 스코어 생성 (이글부터 양파까지 다양한 점수)
 const generateRandomScore = (par: number): number => {
   const randomValue = Math.random();
-  
-  // 양파 (파 * 2) - 1% 확률
-  if (randomValue < 0.19) {
-    return par * 2;
-  }
-  // 이글 (파 - 2) - 3% 확률
-  else if (randomValue < 0.04) {
+
+  // 이글 (파 - 2) - 1% 확률
+  if (randomValue < 0.01) {
     return Math.max(1, par - 2);
   }
-  // 버디 (파 - 1) - 15% 확률
-  else if (randomValue < 0.01) {
+  // 버디 (파 - 1) - 10% 확률
+  else if (randomValue < 0.11) {
     return Math.max(1, par - 1);
   }
-  // 파 - 40% 확률
-  else if (randomValue < 0.59) {
+  // 파 - 50% 확률
+  else if (randomValue < 0.61) {
     return par;
   }
   // 보기 (파 + 1) - 25% 확률
-  else if (randomValue < 0.84) {
+  else if (randomValue < 0.86) {
     return par + 1;
   }
-  // 더블보기 (파 + 2) - 15% 확률
-  else if (randomValue < 0.99) {
+  // 더블보기 (파 + 2) - 10% 확률
+  else if (randomValue < 0.96) {
     return par + 2;
+  }
+  // 양파 (파 * 2) - 3% 확률
+  else if (randomValue < 0.99) {
+    return par * 2;
   }
   // 트리플보기 (파 + 3) - 1% 확률
   else {

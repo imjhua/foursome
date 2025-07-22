@@ -262,8 +262,7 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
           const holes: HoleScore[] = playerData.scores.map((score: number, holeIndex: number) => ({
             hole: holeIndex + 1,
             par: pars[holeIndex] || 4,
-            score: score,
-            playerId: playerId
+            score: score
           }));
           
           // Scorecard 생성

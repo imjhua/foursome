@@ -209,8 +209,7 @@ export default function FileUpload({ onDataLoaded }: FileUploadProps) {
             const holeScore: HoleScore = {
               hole: i,
               par: standardPars[i - 1],
-              score: score,
-              playerId: player.id
+              score: score
             };
             scorecard.holes.push(holeScore);
           }

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import type { Team, Scorecard } from '../types/golf';
 import { calculateTeamTotals } from '../utils/scoreCalculator';
@@ -9,19 +10,17 @@ interface TeamStatsProps {
 }
 
 const TeamStats: React.FC<TeamStatsProps> = ({ teams, scorecards }) => {
+  // scoreCalculator의 calculateTeamTotals만 사용하여 통계 일원화
   const teamTotals = calculateTeamTotals(scorecards, teams);
 
-  // 팀명의 그룹 번호를 추출하는 함수
+  // 팀명 그룹 번호 추출 및 정렬 함수만 남김
   const getGroupNumber = (teamName: string): number => {
     const match = teamName.match(/^(\d+)-/);
-    return match ? parseInt(match[1]) : 999; // prefix가 없으면 맨 뒤로
+    return match ? parseInt(match[1]) : 999;
   };
+  const sortedTeams = [...teams].sort((a, b) => getGroupNumber(a.name) - getGroupNumber(b.name));
 
-  // 그룹별로 정렬된 팀 목록
-  const sortedTeams = [...teams].sort((a, b) => {
-    return getGroupNumber(a.name) - getGroupNumber(b.name);
-  });
-
+  // 실제 사용하는 부분만 남김
   return (
     <div className="team-stats">
       <div className="team-stats-header">

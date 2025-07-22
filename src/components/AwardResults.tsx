@@ -1,19 +1,19 @@
 import React from 'react';
-import type { AwardStats } from '../types/golf';
+import type { TeamAwardStats } from '../types/golf';
 import './AwardResults.css';
 
 interface AwardResultsProps {
-  awards: AwardStats;
+  awards: TeamAwardStats;
 }
 
 const AwardResults: React.FC<AwardResultsProps> = ({ awards }) => {
   // 모든 어워드를 통합하여 순위별로 정리 (그룹 정렬 적용)
   const createRankingData = () => {
     const rankings: { [rank: number]: { 
-      다버디상: typeof awards.다파상; 
-      다파상: typeof awards.다파상; 
-      다보기상: typeof awards.다파상; 
-      다양파상: typeof awards.다파상; 
+      다버디상: typeof awards.다파상;
+      다파상: typeof awards.다파상;
+      다보기상: typeof awards.다파상;
+      다양파상: typeof awards.다파상;
     }} = {};
 
     // 팀명의 그룹 번호를 추출하는 함수
@@ -72,10 +72,19 @@ const AwardResults: React.FC<AwardResultsProps> = ({ awards }) => {
       return <span className="no-winner">-</span>;
     }
 
+    // 같은 팀이 여러 번 나오지 않도록 팀별로 한 번만, count가 가장 높은 값으로 표시
+    const teamMap = new Map<string, { teamName: string; count: number }>();
+    winners.forEach(winner => {
+      if (!teamMap.has(winner.teamName) || teamMap.get(winner.teamName)!.count < winner.count) {
+        teamMap.set(winner.teamName, { teamName: winner.teamName, count: winner.count });
+      }
+    });
+    const uniqueTeams = Array.from(teamMap.values());
+
     return (
       <div className="winners-list">
-        {winners.map((winner, idx) => (
-          <div key={`${winner.playerId}-${idx}`} className="winner-item">
+        {uniqueTeams.map((winner, idx) => (
+          <div key={`${winner.teamName}-${idx}`} className="winner-item">
             <span className="team-name">{winner.teamName}</span>
             <span className="count-badge">{winner.count}개</span>
           </div>

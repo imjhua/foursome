@@ -3,7 +3,7 @@ import ImageScoreUploader from './components/ImageScoreUploader';
 import TeamScorecardTable from './components/TeamScorecardTable';
 import AwardResults from './components/AwardResults';
 import { mockTeams, mockScorecards } from './data/mockData';
-import { calculateAwards } from './utils/scoreCalculator';
+import { calculateTeamAwards } from './utils/scoreCalculator';
 import type { Team, Scorecard } from './types/golf';
 import './App.css';
 
@@ -41,7 +41,7 @@ function App() {
 
   // 어워드를 메모이제이션하여 scorecards나 teams가 변경될 때만 다시 계산
   const awards = useMemo(() => {
-    return calculateAwards(scorecards, teams);
+    return calculateTeamAwards(scorecards, teams);
   }, [scorecards, teams]);
 
   return (

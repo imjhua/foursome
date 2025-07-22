@@ -14,7 +14,7 @@ export interface HoleScore {
   hole: number; // 홀 번호 (1-18)
   par: number; // 홀의 파 수
   score: number; // 실제 스코어
-  playerId: string;
+  displayType?: string; // 추가된 속성
 }
 
 export interface Scorecard {

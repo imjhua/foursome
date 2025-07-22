@@ -52,6 +52,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   width: 100%;
+  overflow: scroll;
 }
 .team-scorecard-table {
   margin: 2rem 0;

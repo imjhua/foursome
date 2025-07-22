@@ -1,4 +1,5 @@
 import type { Team, Player, Scorecard } from '../types/golf';
+import { getScoreType } from '../utils/scoreCalculator';
 
 // 더미 플레이어 데이터
 export const mockPlayers: Player[] = [
@@ -16,22 +17,22 @@ export const mockPlayers: Player[] = [
 export const mockTeams: Team[] = [
   {
     id: 'team1',
-    name: '드래곤즈',
+    name: 'team1',
     players: [mockPlayers[0], mockPlayers[1]]
   },
   {
     id: 'team2',
-    name: '타이거즈',
+    name: 'team2',
     players: [mockPlayers[2], mockPlayers[3]]
   },
   {
     id: 'team3',
-    name: '라이언즈',
+    name: 'team3',
     players: [mockPlayers[4], mockPlayers[5]]
   },
   {
     id: 'team4',
-    name: '이글스',
+    name: 'team4',
     players: [mockPlayers[6], mockPlayers[7]]
   }
 ];
@@ -44,7 +45,7 @@ const generateRandomScore = (par: number): number => {
   const randomValue = Math.random();
   
   // 양파 (파 * 2) - 1% 확률
-  if (randomValue < 0.01) {
+  if (randomValue < 0.19) {
     return par * 2;
   }
   // 이글 (파 - 2) - 3% 확률
@@ -52,7 +53,7 @@ const generateRandomScore = (par: number): number => {
     return Math.max(1, par - 2);
   }
   // 버디 (파 - 1) - 15% 확률
-  else if (randomValue < 0.19) {
+  else if (randomValue < 0.01) {
     return Math.max(1, par - 1);
   }
   // 파 - 40% 확률
@@ -75,84 +76,64 @@ const generateRandomScore = (par: number): number => {
 
 // 더미 스코어카드 데이터
 export const mockScorecards: Scorecard[] = [
-  // 팀1 - 드래곤즈
+  // 팀1
   {
     id: 'scorecard1',
     teamId: 'team1',
     roundDate: '2024-07-15',
-    holes: standardPars.flatMap((par, index) => [
-      {
+    holes: standardPars.map((par, index) => {
+      const score = generateRandomScore(par);
+      return {
         hole: index + 1,
         par,
-        score: generateRandomScore(par),
-        playerId: '1' // 김철수
-      },
-      {
-        hole: index + 1,
-        par,
-        score: generateRandomScore(par),
-        playerId: '2' // 이영희
-      }
-    ])
+        score,
+        displayType: getScoreType(score, par)
+      };
+    })
   },
-  // 팀2 - 타이거즈
+  // 팀2
   {
     id: 'scorecard2',
     teamId: 'team2',
     roundDate: '2024-07-15',
-    holes: standardPars.flatMap((par, index) => [
-      {
+    holes: standardPars.map((par, index) => {
+      const score = generateRandomScore(par);
+      return {
         hole: index + 1,
         par,
-        score: generateRandomScore(par),
-        playerId: '3' // 박민수
-      },
-      {
-        hole: index + 1,
-        par,
-        score: generateRandomScore(par),
-        playerId: '4' // 최지원
-      }
-    ])
+        score,
+        displayType: getScoreType(score, par)
+      };
+    })
   },
-  // 팀3 - 라이언즈
+  // 팀3
   {
     id: 'scorecard3',
     teamId: 'team3',
     roundDate: '2024-07-16',
-    holes: standardPars.flatMap((par, index) => [
-      {
+    holes: standardPars.map((par, index) => {
+      const score = generateRandomScore(par);
+      return {
         hole: index + 1,
         par,
-        score: generateRandomScore(par),
-        playerId: '5' // 정수연
-      },
-      {
-        hole: index + 1,
-        par,
-        score: generateRandomScore(par),
-        playerId: '6' // 강호동
-      }
-    ])
+        score,
+        displayType: getScoreType(score, par)
+      };
+    })
   },
-  // 팀4 - 이글스
+  // 팀4
   {
     id: 'scorecard4',
     teamId: 'team4',
     roundDate: '2024-07-16',
-    holes: standardPars.flatMap((par, index) => [
-      {
+    holes: standardPars.map((par, index) => {
+      const score = generateRandomScore(par);
+      return {
         hole: index + 1,
         par,
-        score: generateRandomScore(par),
-        playerId: '7' // 송지효
-      },
-      {
-        hole: index + 1,
-        par,
-        score: generateRandomScore(par),
-        playerId: '8' // 유재석
-      }
-    ])
+        score,
+        displayType: getScoreType(score, par)
+      };
+    })
   }
 ];

@@ -48,17 +48,11 @@ const ScorecardView: React.FC<ScorecardViewProps> = ({ scorecard, team }) => {
                 <tr key={hole}>
                   <td className="hole-number">{hole}</td>
                   <td className={`par par-${scores[0].par}`}>Par {scores[0].par}</td>
-                  {team.players.map(player => {
-                    const playerScore = scores.find(s => s.playerId === player.id);
-                    return (
-                      <td 
-                        key={player.id} 
-                        className={playerScore ? getScoreClass(playerScore.score, playerScore.par) : ''}
-                      >
-                        {playerScore?.score || '-'}
-                      </td>
-                    );
-                  })}
+                  {scores.map((score, idx) => (
+                    <td key={idx} className={getScoreClass(score.score, score.par)}>
+                      {score.score}
+                    </td>
+                  ))}
                 </tr>
               ))}
           </tbody>

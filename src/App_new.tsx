@@ -4,7 +4,7 @@ import AwardResults from './components/AwardResults';
 import TeamStats from './components/TeamStats';
 import FileUpload from './components/FileUpload';
 import { mockTeams, mockScorecards } from './data/mockData';
-import { calculateAwards } from './utils/scoreCalculator';
+import { calculateTeamAwards } from './utils/scoreCalculator';
 import type { Team, Scorecard } from './types/golf';
 import './App.css';
 
@@ -25,7 +25,7 @@ function App() {
     setIsUsingUploadedData(false);
   };
 
-  const awards = calculateAwards(scorecards, teams);
+  const awards = calculateTeamAwards(scorecards, teams);
 
   return (
     <div className="app">

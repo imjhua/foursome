@@ -1,0 +1,377 @@
+.award-results {
+  margin: 30px 0;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 30px;
+  color: #333;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e9ecef;
+}
+
+.award-results-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.award-results-header h2 {
+  margin: 0 0 8px 0;
+  font-size: 2em;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.award-results-header p {
+  margin: 0;
+  color: #6c757d;
+  font-size: 1em;
+  font-weight: 400;
+}
+
+/* 테이블 컨테이너 */
+.award-table-container {
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* 테이블 */
+.award-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+/* 헤더 */
+.award-table thead {
+  background: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.award-table th {
+  padding: 16px 12px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1em;
+  vertical-align: middle;
+  color: #495057;
+}
+
+.rank-column {
+  width: 100px;
+  background: #f1f3f4;
+}
+
+.award-column {
+  width: calc((100% - 100px) / 4);
+}
+
+.birdie-column {
+  background: rgba(255, 193, 7, 0.1);
+}
+
+.par-column {
+  background: rgba(108, 117, 125, 0.1);
+}
+
+.bogey-column {
+  background: rgba(0, 123, 255, 0.1);
+}
+
+.doublepar-column {
+  background: rgba(220, 53, 69, 0.1);
+}
+
+/* 헤더 콘텐츠 */
+.award-header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.award-name {
+  font-size: 0.95em;
+  font-weight: 600;
+  color: #495057;
+}
+
+/* 테이블 행 */
+.award-row {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.award-row:hover {
+  background: transparent;
+}
+
+.award-row:last-child {
+  border-bottom: none;
+}
+
+/* 순위별 행 색상 제거 - 컬럼 색상과 충돌 방지 */
+.award-row.rank-first {
+  background: transparent;
+}
+
+.award-row.rank-second {
+  background: transparent;
+}
+
+.award-row.rank-third {
+  background: transparent;
+}
+
+/* 셀 */
+.award-table td {
+  padding: 8px 12px;
+  vertical-align: middle;
+  border-right: 1px solid #dee2e6;
+  height: 50px;
+}
+
+.award-table td:last-child {
+  border-right: none;
+}
+
+/* 순위 셀 */
+.rank-cell {
+  text-align: center;
+  background: #f8f9fa;
+  vertical-align: middle;
+}
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: #ffffff;
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
+  padding: 4px 8px;
+  min-width: 40px;
+  justify-content: center;
+}
+
+.rank-first .rank-badge {
+  background: #ffd700;
+  border-color: #ffc107;
+  color: #856404;
+  font-weight: 700;
+}
+
+.rank-second .rank-badge {
+  background: #e6e6fa;
+  border-color: #c0c0c0;
+  color: #6c757d;
+  font-weight: 600;
+}
+
+.rank-third .rank-badge {
+  background: #daa520;
+  border-color: #cd853f;
+  color: #fff;
+  font-weight: 600;
+}
+
+.rank-number {
+  font-size: 1.0em;
+  line-height: 1;
+}
+
+.rank-suffix {
+  font-size: 0.75em;
+  margin-top: -1px;
+}
+
+/* 어워드 셀 */
+.award-cell {
+  min-height: 40px;
+  vertical-align: middle;
+  padding: 8px 12px;
+}
+
+/* 테이블 컬럼 배경색 - 스코어 가이드 범례와 일치 */
+.award-table .birdie-column,
+.award-table .birdie-cell {
+  background-color: rgba(255, 193, 7, 0.1);
+}
+
+.award-table .par-column,
+.award-table .par-cell {
+  background-color: rgba(108, 117, 125, 0.1);
+}
+
+.award-table .bogey-column,
+.award-table .bogey-cell {
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+.award-table .doublepar-column,
+.award-table .doublepar-cell {
+  background-color: rgba(220, 53, 69, 0.1);
+}
+
+/* 순위 셀 */
+.rank-cell {
+  background: #f8f9fa;
+  font-weight: 600;
+  text-align: center;
+  vertical-align: middle;
+  width: 80px;
+}
+
+/* 우승자 목록 */
+.winners-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.winner-item {
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.team-name {
+  font-weight: 600;
+  font-size: 0.95em;
+  color: #495057;
+}
+
+.count-badge {
+  background: #e9ecef;
+  border-radius: 12px;
+  padding: 3px 8px;
+  font-weight: 600;
+  font-size: 0.8em;
+  min-width: 35px;
+  text-align: center;
+  color: #495057;
+  border: 1px solid #dee2e6;
+}
+
+/* 데이터 없음 */
+.no-winner {
+  color: #adb5bd;
+  font-style: italic;
+  text-align: center;
+  display: block;
+  padding: 16px;
+  font-size: 0.9em;
+}
+
+.no-data {
+  text-align: center;
+  padding: 40px;
+  color: #6c757d;
+  font-style: italic;
+  font-size: 1.1em;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1024px) {
+  .award-results {
+    padding: 25px 20px;
+  }
+  
+  .award-table th,
+  .award-table td {
+    padding: 16px 12px;
+  }
+  
+  .rank-badge {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .rank-number {
+    font-size: 1.2em;
+  }
+  
+  .winner-item {
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .award-results {
+    padding: 20px 15px;
+    margin: 20px 0;
+  }
+  
+  .award-results-header h2 {
+    font-size: 1.8em;
+  }
+  
+  .award-table-container {
+    overflow-x: auto;
+  }
+  
+  .award-table {
+    min-width: 800px;
+  }
+  
+  .award-table th,
+  .award-table td {
+    padding: 12px 8px;
+  }
+  
+  .award-emoji {
+    font-size: 1.5em;
+  }
+  
+  .award-name {
+    font-size: 0.9em;
+  }
+  
+  .rank-badge {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .rank-number {
+    font-size: 1.1em;
+  }
+  
+  .rank-suffix {
+    font-size: 0.7em;
+  }
+}
+
+@media (max-width: 480px) {
+  .award-results {
+    padding: 15px 10px;
+  }
+  
+  .award-results-header h2 {
+    font-size: 1.6em;
+  }
+  
+  .award-table {
+    min-width: 700px;
+    font-size: 0.9em;
+  }
+  
+  .award-table th,
+  .award-table td {
+    padding: 10px 6px;
+  }
+  
+  .winner-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  
+  .count-badge {
+    align-self: flex-end;
+  }
+}

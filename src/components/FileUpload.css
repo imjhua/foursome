@@ -1,0 +1,148 @@
+.file-upload {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.upload-section h3 {
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.upload-section p {
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.upload-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.file-input {
+  flex: 1;
+  min-width: 250px;
+  padding: 0.75rem;
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+  background: #f8f9fa;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.file-input:hover:not(:disabled) {
+  border-color: #007bff;
+  background: #e3f2fd;
+}
+
+.file-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.sample-download-btn {
+  padding: 0.75rem 1.5rem;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+}
+
+.sample-download-btn:hover:not(:disabled) {
+  background: #218838;
+}
+
+.sample-download-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #e3f2fd;
+  border-radius: 8px;
+  color: #1976d2;
+  margin-bottom: 1rem;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e3f2fd;
+  border-top: 2px solid #1976d2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error {
+  padding: 1rem;
+  background: #ffebee;
+  border-left: 4px solid #f44336;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.error span {
+  color: #c62828;
+  font-weight: 500;
+}
+
+.format-info {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.format-info h4 {
+  color: #495057;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.format-info ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.format-info li {
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.format-info li strong {
+  color: #495057;
+}
+
+@media (max-width: 768px) {
+  .upload-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .file-input {
+    min-width: auto;
+  }
+}

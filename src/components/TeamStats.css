@@ -1,0 +1,262 @@
+.team-stats {
+  margin: 30px 0;
+}
+
+.team-stats-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.team-stats-header h2 {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-size: 1.8em;
+}
+
+.team-stats-header p {
+  margin: 0;
+  color: #666;
+  font-size: 1em;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.team-stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e9ecef;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.team-stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.team-header {
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.team-header h3 {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-size: 1.3em;
+  font-weight: 600;
+}
+
+.player-list {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.player-tag {
+  background: #f8f9fa;
+  color: #495057;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 0.85em;
+  font-weight: 500;
+}
+
+.stats-content {
+  margin-bottom: 10px;
+}
+
+.stats-row {
+  display: flex;
+  gap: 8px;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 6px;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+  min-width: 60px;
+  max-width: 80px;
+}
+
+.stat-item:hover {
+  transform: scale(1.02);
+}
+
+.stat-item.eagle {
+  background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+  border: 1px solid #abdde5;
+}
+
+.stat-item.birdie {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  border: 1px solid #b8dacc;
+}
+
+.stat-item.par {
+  background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+  border: 1px solid #f5d788;
+}
+
+/* 보기와 더블보기 스타일 */
+.stat-item.bogey {
+  background-color: #000080 !important;
+  color: white !important;
+  border: 2px solid #000080 !important;
+}
+
+.stat-item.double-bogey {
+  background-color: #000080 !important;
+  color: white !important;
+  border: 2px solid #000080 !important;
+  position: relative;
+  box-shadow: inset 0 0 0 2px white !important;
+}
+
+/* 보기와 더블보기 강제 스타일 적용 */
+.stats-grid .team-stat-card .stats-content .stats-row .stat-item.bogey {
+  background-color: #000080 !important;
+  background-image: none !important;
+  color: white !important;
+  border: 2px solid #000080 !important;
+}
+
+.stats-grid .team-stat-card .stats-content .stats-row .stat-item.double-bogey {
+  background-color: #000080 !important;
+  background-image: none !important;
+  color: white !important;
+  border: 2px solid #000080 !important;
+  position: relative;
+  box-shadow: inset 0 0 0 2px white !important;
+}
+
+.team-stat-card .stat-item.bogey {
+  background: #000080 !important;
+  color: white !important;
+  border: 2px solid #000080 !important;
+}
+
+.team-stat-card .stat-item.double-bogey {
+  background: #000080 !important;
+  color: white !important;
+  border: 2px solid #000080 !important;
+  position: relative;
+  box-shadow: inset 0 0 0 1px white, inset 0 0 0 3px #000080 !important;
+}
+
+
+
+.stat-item.doublepar {
+  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+  border: 1px solid #f1aeb5;
+}
+
+.stat-icon {
+  font-size: 1.5em;
+  line-height: 1;
+}
+
+.stat-info {
+  text-align: center;
+  width: 100%;
+}
+
+.stat-label {
+  font-size: 0.8em;
+  color: #666;
+  margin-bottom: 2px;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 1.4em;
+  font-weight: 700;
+  color: #333;
+  line-height: 1;
+}
+
+.total-info {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+  text-align: center;
+  font-size: 0.9em;
+  color: #666;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .team-stat-card {
+    padding: 15px;
+  }
+  
+  .stats-row {
+    gap: 8px;
+  }
+  
+  .stat-item {
+    padding: 10px 6px;
+  }
+  
+  .stat-value {
+    font-size: 1.2em;
+  }
+  
+  .stat-icon {
+    font-size: 1.3em;
+  }
+  
+  .stat-label {
+    font-size: 0.75em;
+  }
+}
+
+@media (max-width: 480px) {
+  .player-list {
+    justify-content: center;
+  }
+  
+  .player-tag {
+    padding: 3px 8px;
+    font-size: 0.8em;
+  }
+  
+  .stats-row {
+    gap: 6px;
+  }
+  
+  .stat-item {
+    padding: 8px 4px;
+  }
+  
+  .stat-value {
+    font-size: 1.1em;
+  }
+  
+  .stat-icon {
+    font-size: 1.2em;
+  }
+  
+  .stat-label {
+    font-size: 0.7em;
+  }
+}

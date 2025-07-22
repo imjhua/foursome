@@ -1,0 +1,489 @@
+
+
+.score-legend-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f6f8fa;
+  padding: 18px 0 12px 0;
+  border-radius: 0 0 12px 12px;
+  margin-bottom: 12px;
+}
+.score-legend-row .legend-score {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-size: .8rem;
+  width: 26px;
+  height: 26px;
+  background: #fff;
+  margin-right: 0;
+  font-weight: bold;
+}
+.score-legend-row .legend-label {
+  color: #333;
+  margin-left: 6px;
+  margin-right: 12px;
+}
+.score-legend-row .legend-score.eagle {
+  border: 3px solid #4caf50;
+  color: #4caf50;
+}
+.score-legend-row .legend-score.birdie {
+  border: 3px solid #ffc107;
+  color: #ffc107;
+}
+.score-legend-row .legend-score.par {
+  border: 3px solid #6c757d;
+  color: #6c757d;
+  border-radius: 2px;
+}
+.score-legend-row .legend-score.bogey {
+  border: 3px solid #0d1977;
+  color: #0d1977;
+}
+.score-legend-row .legend-score.doublepar {
+  border: 3px solid #dc3545;
+  color: #dc3545;
+}
+.table-container {
+  max-height: 600px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+}
+.team-scorecard-table {
+  margin: 2rem 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* 스코어 레전드 스타일 */
+.score-legend {
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-bottom: 2px solid #dee2e6;
+  margin-bottom: 0;
+}
+
+.legend-title {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #495057;
+  text-align: center;
+}
+
+
+.scorecard-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  min-width: 1200px;
+}
+
+/* 헤더 스타일 */
+.scorecard-table thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.scorecard-table th {
+  padding: 12px 8px;
+  text-align: center;
+  font-weight: 600;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  vertical-align: middle;
+}
+
+.scorecard-table th:last-child {
+  border-right: none;
+}
+
+.team-header {
+  width: 80px;
+  min-width: 80px;
+  background: linear-gradient(135deg, #28a745, #20c997);
+}
+
+.player-header {
+  width: 100px;
+  min-width: 100px;
+  background: linear-gradient(135deg, #28a745, #20c997);
+}
+
+.hole-header {
+  width: 50px;
+  min-width: 50px;
+  padding: 8px 4px;
+}
+
+.hole-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.hole-number {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: white;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.par-info {
+  font-size: 0.75rem;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.total-header,
+.final-total-header {
+  width: 80px;
+  min-width: 80px;
+  background: linear-gradient(135deg, #ffc107, #fd7e14);
+  font-size: 0.9rem;
+}
+
+.final-total-header {
+  background: linear-gradient(135deg, #dc3545, #e83e8c);
+}
+
+/* 구분선 */
+.front-nine-last {
+  border-right: 3px solid #007bff !important;
+}
+
+.back-nine-last {
+  border-right: 3px solid #28a745 !important;
+}
+
+/* 바디 스타일 */
+.scorecard-table tbody tr {
+  border-bottom: 1px solid #e9ecef;
+  transition: background-color 0.2s ease;
+}
+
+.scorecard-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.first-team-row,
+.team-score-row {
+  border-top: 2px solid #007bff;
+}
+
+.additional-player-row {
+  background-color: rgba(0, 123, 255, 0.02);
+}
+
+.scorecard-table td {
+  padding: 10px 8px;
+  text-align: center;
+  vertical-align: middle;
+  border-right: 1px solid #e9ecef;
+}
+
+.scorecard-table td:last-child {
+  border-right: none;
+}
+
+/* 팀/플레이어 이름 셀 */
+.team-name-cell {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  border-right: 2px solid #dee2e6;
+  vertical-align: middle;
+}
+
+.team-name {
+  color: #495057;
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.player-name-cell,
+.players-cell {
+  background-color: #f1f3f4;
+  font-weight: 500;
+  color: #495057;
+  border-right: 2px solid #dee2e6;
+  font-size: 0.9rem;
+  padding: 8px 10px;
+}
+
+.player-names {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: center;
+}
+
+.player-name {
+  font-size: 0.85rem;
+  color: #495057;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* 스코어 셀 */
+.score-cell {
+  padding: 8px 4px;
+  min-width: 45px;
+}
+
+.score {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* 스코어 타입별 색상 */
+.score.doublepar {
+  background-color: white;
+  color: #dc3545;
+  border: 2px solid #dc3545;
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+.score.eagle {
+  background-color: white;
+  color: #28a745;
+  border: 2px solid #28a745;
+}
+
+.score.birdie {
+  background-color: white;
+  color: #ffc107;
+  border: 2px solid #ffc107;
+}
+
+.score.par {
+  background-color: white;
+  color: #6c757d;
+  border: 2px solid #6c757d;
+  border-radius: 4px;
+}
+
+.score.bogey {
+  background-color: white;
+  color: #000080;
+  border: 2px solid #000080;
+}
+
+
+.no-score {
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* 합계 셀 */
+.subtotal-cell {
+  background-color: #fff3cd;
+  border-left: 2px solid #ffc107;
+  font-weight: 600;
+}
+
+.subtotal-score {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #856404;
+  margin-bottom: 2px;
+}
+
+.subtotal-par {
+  font-size: 0.75rem;
+  color: #6c757d;
+}
+
+.final-total-cell {
+  background: linear-gradient(135deg, #ffebee, #ffcdd2);
+  border-left: 3px solid #dc3545;
+  font-weight: 700;
+}
+
+.final-total {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #c62828;
+  margin-bottom: 2px;
+}
+
+.final-par {
+  font-size: 0.8rem;
+  color: #795548;
+  font-weight: 600;
+}
+
+/* 팀 성과 행 스타일 */
+.team-stats-row {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-top: 2px solid #dee2e6;
+  border-bottom: 3px solid #6c757d;
+  font-weight: 600;
+}
+
+.stats-label-cell {
+  background: linear-gradient(135deg, #17a2b8, #138496);
+  color: white;
+  text-align: center;
+  vertical-align: middle;
+  font-weight: 700;
+  border-right: 2px solid #117a8b;
+}
+
+.team-stats-label {
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+}
+
+.stats-content-cell {
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.team-performance-stats {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: transform 0.2s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-2px);
+}
+
+.eagle-stat {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
+}
+
+.birdie-stat {
+  background-color: #ffc107;
+  color: #212529;
+  border: none;
+  box-shadow: 0 2px 8px rgba(255, 193, 7, 0.2);
+}
+
+.par-stat {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  box-shadow: 0 2px 8px rgba(108, 117, 125, 0.2);
+}
+
+.bogey-stat {
+  background-color: #000080;
+  color: white;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 128, 0.2);
+}
+
+
+.doublepar-stat {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.2);
+}
+
+.stat-icon {
+  font-size: 1.1rem;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.stat-count {
+  font-size: 1rem;
+  font-weight: 800;
+  min-width: 20px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+.stats-empty-cell {
+  background: transparent;
+}
+
+/* 반응형 팀 성과 */
+@media (max-width: 1200px) {
+  .team-performance-stats {
+    gap: 16px;
+  }
+  
+  .stat-item {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+  
+  .stat-icon {
+    font-size: 1rem;
+  }
+  
+  .stat-label {
+    font-size: 0.75rem;
+  }
+  
+  .stat-count {
+    font-size: 0.9rem;
+    padding: 1px 4px;
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-content-cell {
+    padding: 8px 12px;
+  }
+  
+  .team-performance-stats {
+    gap: 12px;
+    justify-content: center;
+  }
+  
+  .stat-item {
+    padding: 3px 6px;
+    font-size: 0.75rem;
+  }
+  
+  .team-stats-label {
+    font-size: 0.8rem;
+  }
+}

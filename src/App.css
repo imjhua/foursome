@@ -1,0 +1,158 @@
+/* 전체 앱 스타일 */
+.app {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.app-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.app-header h1 {
+  margin: 0 0 10px 0;
+  font-size: 2.5em;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.app-header p {
+  margin: 0 0 15px 0;
+  font-size: 1.2em;
+  opacity: 0.9;
+}
+
+.data-source-controls {
+  margin-top: 15px;
+}
+
+.mock-data-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 25px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.mock-data-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.8);
+  transform: translateY(-2px);
+}
+
+.app-main {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.scorecards-section {
+  margin: 30px 0;
+}
+
+.scorecards-section h2 {
+  text-align: center;
+  color: #333;
+  font-size: 1.8em;
+  margin-bottom: 25px;
+}
+
+.scorecards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.app-footer {
+  background: #333;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  margin-top: 40px;
+}
+
+.app-footer p {
+  margin: 0;
+  opacity: 0.8;
+}
+
+/* 업로드 안내 메시지 */
+.upload-guide-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  margin: 20px 0;
+}
+
+.guide-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 2px solid #dee2e6;
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 100%;
+}
+
+.guide-card .guide-icon {
+  font-size: 3em;
+  display: block;
+  margin-bottom: 15px;
+}
+
+.guide-card p {
+  margin: 0;
+  color: #495057;
+  font-size: 1.1em;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 30px 15px;
+  }
+  
+  .app-header h1 {
+    font-size: 2em;
+  }
+  
+  .app-header p {
+    font-size: 1em;
+  }
+  
+  .app-main {
+    padding: 15px;
+  }
+
+  .guide-card {
+    padding: 20px;
+    margin: 0 10px;
+  }
+
+  .guide-card .guide-icon {
+    font-size: 2.5em;
+  }
+
+  .guide-card p {
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-header h1 {
+    font-size: 1.6em;
+  }
+  
+  .scorecards-section h2 {
+    font-size: 1.5em;
+  }
+}

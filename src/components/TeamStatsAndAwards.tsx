@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Team, Scorecard, TeamAwardStats } from '../types/golf';
+import type { Team, Scorecard } from '../types/golf';
 import { calculateTeamAwards } from '../utils/scoreCalculator';
 import './TeamStatsAndAwards.css';
 

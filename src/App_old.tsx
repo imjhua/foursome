@@ -30,7 +30,7 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>🏌️‍♂️ 골프 스코어카드 관리</h1>
+        <h1>⛳️‍♂️ 골프 스코어카드 관리</h1>
         <p>팀별 스코어카드와 어워드 현황을 확인해보세요</p>
         <div className="data-source-controls">
           {isUsingUploadedData && (
@@ -40,50 +40,38 @@ function App() {
           )}
         </div>
       </header>
-
-      <main className="app-main">
-        {/* 파일 업로드 섹션 */}
-        <FileUpload onDataLoaded={handleDataLoaded} />
-
-        {/* 팀별 통계 */}
-        <TeamStats teams={teams} scorecards={scorecards} />
-
-        {/* 어워드 결과 */}
-        <AwardResults awards={awards} />
-
-        {/* 스코어카드 목록 */}
-        <section className="scorecards-section">
-          <h2>📋 팀별 스코어카드</h2>
-          <div className="scorecards-grid">
-            {scorecards.map(scorecard => {
-              const team = teams.find(t => t.id === scorecard.teamId);
-              const player = team?.players.find(p => scorecard.holes.some(h => h.playerId === p.id));
-              return (
-                <ScorecardView
-                  key={scorecard.id}
-                  scorecard={scorecard}
-                  team={team}
-                  player={player}
-                />
-              );
-            })}
+      <main>
+        <section>
+          <FileUpload onDataLoaded={handleDataLoaded} />
+        </section>
+        <section>
+          <h2>팀별 스코어카드</h2>
+          <div className="scorecards-list">
+            {teams.map(team => (
+              <div key={team.id} className="team-scorecard-section">
+                <h3>{team.name}</h3>
+                {scorecards
+                  .filter(scorecard => scorecard.teamId === team.id)
+                  .map(scorecard => (
+                    <ScorecardView
+                      key={scorecard.id}
+                      scorecard={scorecard}
+                      team={team}
+                    />
+                  ))}
+              </div>
+            ))}
           </div>
         </section>
-      </main>
-    </div>
-  );
-              return team ? (
-                <ScorecardView 
-                  key={scorecard.id} 
-                  scorecard={scorecard} 
-                  team={team} 
-                />
-              ) : null;
-            })}
-          </div>
+        <section>
+          <h2>어워드 결과</h2>
+          <AwardResults awards={awards} />
+        </section>
+        <section>
+          <h2>팀 통계</h2>
+          <TeamStats teams={teams} scorecards={scorecards} />
         </section>
       </main>
-
       <footer className="app-footer">
         <p>© 2024 Golf Scorecard Manager</p>
       </footer>

@@ -75,7 +75,7 @@ const TeamAwards: React.FC<TeamAwardsProps> = ({
             {renderTeamAwardSection('다버디상', teamAwards.다버디상, '🐦')}
             {renderTeamAwardSection('다파상', teamAwards.다파상, '🎯')}
             {renderTeamAwardSection('다보기상', teamAwards.다보기상, '😅')}
-            {renderTeamAwardSection('다더블보기상', teamAwards.다더블보기상, '💙')}
+            {renderTeamAwardSection('다더블보기상', teamAwards.다보기상, '💙')}
             {renderTeamAwardSection('다양파상', teamAwards.다양파상, '🔴')}
           </div>
         </div>

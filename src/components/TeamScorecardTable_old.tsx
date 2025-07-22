@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Team, Scorecard, HoleScore } from '../types/golf';
+import type { Team, Scorecard } from '../types/golf';
 import { getScoreType } from '../utils/scoreCalculator';
 import './TeamScorecardTable.css';
 
@@ -33,14 +33,12 @@ const TeamScorecardTable: React.FC<TeamScorecardTableProps> = ({ teams, scorecar
         <table className="scorecard-table">
           <thead>
             <tr>
-              <th className="team-header">팀</th>
-              <th className="player-header">플레이어</th>
-              {Array.from({ length: 18 }, (_, i) => i + 1).map(hole => (
-                <th key={hole} className={`hole-header ${hole === 9 ? 'front-nine-last' : hole === 18 ? 'back-nine-last' : ''}`}>
-                  <div className="hole-info">
-                    <div className="hole-number">{hole}</div>
-                    <div className="par-number">Par {standardPars[hole - 1]}</div>
-                  </div>
+              <th className="team-name-header">팀</th>
+              <th className="player-name-header">플레이어</th>
+              {standardPars.map((par, idx) => (
+                <th key={idx + 1} className={idx === 8 ? 'front-nine-last' : idx === 17 ? 'back-nine-last' : ''}>
+                  <div className="par-number">Par {par}</div>
+                  <div className="hole-number">{idx + 1}H</div>
                 </th>
               ))}
               <th className="total-header">전반</th>
@@ -51,27 +49,20 @@ const TeamScorecardTable: React.FC<TeamScorecardTableProps> = ({ teams, scorecar
           <tbody>
             {teams.map(team => {
               const teamScorecards = scorecards.filter(sc => sc.teamId === team.id);
-              
               return teamScorecards.map((scorecard, index) => {
                 const player = team.players.find(p => scorecard.holes.some(h => h.playerId === p.id));
                 const playerName = player ? player.name : getPlayerNameFromScorecard(scorecard);
-                
-                // 홀별 스코어 배열 생성
                 const holeScores = Array.from({ length: 18 }, (_, i) => {
                   const hole = i + 1;
                   const holeScore = scorecard.holes.find(h => h.hole === hole);
                   return holeScore;
                 });
-
-                // 전반/후반/총합 계산
                 const frontNine = holeScores.slice(0, 9).reduce((sum, score) => sum + (score?.score || 0), 0);
                 const backNine = holeScores.slice(9, 18).reduce((sum, score) => sum + (score?.score || 0), 0);
                 const total = frontNine + backNine;
-                
                 const frontNinePar = standardPars.slice(0, 9).reduce((sum, par) => sum + par, 0);
                 const backNinePar = standardPars.slice(9, 18).reduce((sum, par) => sum + par, 0);
                 const totalPar = frontNinePar + backNinePar;
-
                 return (
                   <tr key={scorecard.id} className={index === 0 ? 'first-team-row' : 'additional-player-row'}>
                     <td className="team-name-cell">
@@ -112,7 +103,6 @@ const TeamScorecardTable: React.FC<TeamScorecardTableProps> = ({ teams, scorecar
       </div>
     </div>
   );
-};
 };
 
 export default TeamScorecardTable;

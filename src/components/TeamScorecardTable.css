@@ -48,11 +48,10 @@
   color: #dc3545;
 }
 .table-container {
-  max-height: 600px;
   overflow-y: auto;
   overflow-x: hidden;
   width: 100%;
-  overflow: scroll;
+  overflow-x: scroll;
 }
 .team-scorecard-table {
   margin: 2rem 0;

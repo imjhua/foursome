@@ -4,6 +4,7 @@ import type { ExtractedScoreData } from '../utils/imageScoreExtractor';
 import type { Team, Scorecard, Player, HoleScore } from '../types/golf';
 import { mockTeams, mockScorecards } from '../data/mockData';
 import './ImageScoreUploader.css';
+import { getScoreType } from '../utils/scoreCalculator';
 
 interface UploadedImage {
   id: string;
@@ -233,7 +234,6 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
       ? firstImageData.pars
       : [4, 3, 4, 5, 4, 3, 4, 4, 5, 4, 3, 4, 5, 4, 3, 4, 4, 5]; // 기본 파 정보
     
-    console.log('사용할 파 정보 (첫 번째 사진 기준):', pars);
 
     // 각 사진별로 팀 생성 (사진 한 개당 2팀씩)
     allExtractedData.forEach(({ data, order }) => {
@@ -259,11 +259,15 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
           const playerId = `player-${order}-${teamIndex + 1}-${playerIndex + 1}`;
           
           // HoleScore 배열 생성 (첫 번째 사진의 파 정보 사용)
-          const holes: HoleScore[] = playerData.scores.map((score: number, holeIndex: number) => ({
-            hole: holeIndex + 1,
-            par: pars[holeIndex] || 4,
-            score: score
-          }));
+          const holes: HoleScore[] = playerData.scores.map((score: number, holeIndex: number) => {
+            const par = pars[holeIndex] || 4;
+            return {
+              hole: holeIndex + 1,
+              par,
+              score,
+              displayType: getScoreType(score, par)
+            };
+          });
           
           // Scorecard 생성
           const scorecard: Scorecard = {
@@ -277,9 +281,6 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
         });
       });
     });
-
-    console.log('생성된 팀:', teams);
-    console.log('생성된 스코어카드:', scorecards);
 
     onScoresExtracted(scorecards, teams);
     

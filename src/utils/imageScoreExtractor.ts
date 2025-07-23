@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { getScoreType } from './scoreCalculator';
 import type { Player, Team, Scorecard, HoleScore } from '../types/golf';
 
 // Gemini API 설정
@@ -55,7 +56,6 @@ export const extractScoresFromImage = async (file: File): Promise<ExtractedScore
     
     // 캐시된 결과가 있으면 반환
     if (extractionCache.has(cacheKey)) {
-      console.log('캐시된 결과 사용:', cacheKey);
       return extractionCache.get(cacheKey)!;
     }
     
@@ -146,10 +146,7 @@ export const extractScoresFromImage = async (file: File): Promise<ExtractedScore
       // JSON 부분만 추출 (앞뒤 텍스트 제거)
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       const jsonString = jsonMatch ? jsonMatch[0] : content;
-      console.log('추출할 JSON 문자열:', jsonString);
       parsedData = JSON.parse(jsonString);
-      console.log('파싱된 데이터:', parsedData);
-      console.log('추출된 파 정보:', parsedData.pars);
     } catch (parseError) {
       console.error('JSON 파싱 오류:', parseError);
       throw new Error('Gemini 응답을 JSON으로 변환할 수 없습니다.');
@@ -198,22 +195,19 @@ export const extractScoresFromImage = async (file: File): Promise<ExtractedScore
     // 파 정보 검증 및 정리
     const validatePars = (pars: unknown[]): number[] => {
       if (!Array.isArray(pars) || pars.length !== 18) {
-        console.log('파 배열이 18개가 아님, 기본값 사용');
         return [4, 3, 4, 5, 4, 3, 4, 4, 5, 4, 3, 4, 5, 4, 3, 4, 4, 5];
       }
       
-      const validatedPars = pars.map((par, index) => {
+      const validatedPars = pars.map((par) => {
         const num = typeof par === 'number' ? par : parseInt(String(par));
         // 파는 3, 4, 5만 유효
         if (num >= 3 && num <= 5) {
           return num;
         } else {
-          console.log(`${index + 1}번 홀 파 값이 유효하지 않음 (${par}), 4로 설정`);
           return 4; // 기본값
         }
       });
       
-      console.log('추출된 파 정보:', validatedPars);
       return validatedPars;
     };
 
@@ -228,7 +222,6 @@ export const extractScoresFromImage = async (file: File): Promise<ExtractedScore
 
     // 결과를 캐시에 저장
     extractionCache.set(cacheKey, result);
-    console.log('결과 캐시에 저장:', cacheKey);
 
     return result;
 
@@ -257,35 +250,40 @@ export const convertToAppFormat = (extractedData: ExtractedScoreData, imageOrder
   const teams: Team[] = [];
   const scorecards: Scorecard[] = [];
   
+  const pars = extractedData.pars && extractedData.pars.length === 18 ? extractedData.pars : standardPars;
   extractedData.teams.forEach((teamData, teamIndex) => {
     teamData.players.forEach((playerData, playerIndex) => {
       const teamLetter = String.fromCharCode(65 + playerIndex); // A, B, C, ...
       const playerId = `extracted-${imageOrder}-${teamIndex + 1}-${teamLetter}`;
       const teamId = `team-${imageOrder}-${teamIndex + 1}-${teamLetter}`;
-      
+
       // 업로드 순서를 prefix로 붙인 팀명
       const teamName = `${imageOrder}-${teamData.teamName}`;
-      
+
       // Player 생성
       const player: Player = {
         id: playerId,
         name: playerData.name
       };
-      
+
       // Team 생성
       const team: Team = {
         id: teamId,
         name: teamName,
         players: [player]
       };
-      
-      // HoleScore 배열 생성
-      const holes: HoleScore[] = playerData.scores.map((score: number, holeIndex: number) => ({
-        hole: holeIndex + 1,
-        par: standardPars[holeIndex] || 4,
-        score: score
-      }));
-      
+
+      // HoleScore 배열 생성 (displayType 추가, 실제 pars 사용)
+      const holes: HoleScore[] = playerData.scores.map((score: number, holeIndex: number) => {
+        const par = pars[holeIndex] || 4;
+        return {
+          hole: holeIndex + 1,
+          par,
+          score,
+          displayType: getScoreType(score, par)
+        };
+      });
+
       // Scorecard 생성
       const scorecard: Scorecard = {
         id: `scorecard-${imageOrder}-${teamIndex + 1}-${teamLetter}`,
@@ -293,7 +291,7 @@ export const convertToAppFormat = (extractedData: ExtractedScoreData, imageOrder
         roundDate: new Date().toISOString().split('T')[0],
         holes: holes
       };
-      
+
       teams.push(team);
       scorecards.push(scorecard);
     });

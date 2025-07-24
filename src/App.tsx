@@ -49,13 +49,6 @@ function App() {
       <header className="app-header">
         <h1>🏌️‍♂️ 포썸 어워드</h1>
         <p>팀별 스코어카드와 어워드 현황을 확인해보세요</p>
-        <div className="data-source-controls">
-          {isUsingUploadedData && (
-            <button onClick={handleUseMockData} className="mock-data-btn">
-              샘플 데이터로 돌아가기
-            </button>
-          )}
-        </div>
       </header>
 
       <main className="app-main">

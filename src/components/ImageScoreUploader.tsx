@@ -34,7 +34,7 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
     const connected = await checkGeminiConnection();
     setIsConnected(connected);
   }, [isConnected]);
-  
+
   // 컴포넌트 마운트 시 Gemini 연결 확인 및 mockData 적용
   React.useEffect(() => {
     if (isConnected === null) {
@@ -294,6 +294,7 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
   return (
     <div className="image-score-uploader">
       <div className="uploader-header">
+        <div className="status-message-area">
         <h3>
           📸 스코어카드 이미지 업로드
           {isConnected === null ? (
@@ -304,11 +305,16 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
             <span className="status-dot status-disconnected">●</span>
           )}
         </h3>
-        {isConnected ? (
-          <p>골프 스코어카드 사진을 업로드하면 자동으로 스코어를 추출합니다</p>
-        ) : (
-          <p>서버 에러로 업로드가 불가능합니다. 다음에 다시 시도 해 주세요.</p>
-        )}
+        <div className="status-message-content">
+          {isConnected === null ? (
+            <p>서버 연결 상태를 확인 중입니다...</p>
+          ) : isConnected === true ? (
+            <p>골프 스코어카드 사진을 업로드하면 자동으로 스코어를 추출합니다</p>
+          ) : (
+            <p>서버 에러로 업로드가 불가능합니다. API 키를 확인하거나, 관리자에게 문의하세요.</p>
+          )}
+        </div>
+        </div>
       </div>
 
       {/* 파일 업로드 영역 */}

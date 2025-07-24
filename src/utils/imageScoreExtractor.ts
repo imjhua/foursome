@@ -5,21 +5,38 @@ import type { Player, Team, Scorecard, HoleScore } from '../types/golf';
 // 여러 Gemini API 키 지원
 const API_KEYS = (import.meta.env.VITE_GEMINI_API_KEYS || '').split(',').map((k: string) => k.trim()).filter(Boolean);
 
-// 사용 가능한 키 중 연결 가능한 genAI 인스턴스 반환
+let cachedGenAI: GoogleGenerativeAI | null = null;
+let cachedKey: string | null = null;
+
 const getWorkingGenAI = async (): Promise<GoogleGenerativeAI | null> => {
+  // 이미 연결된 인스턴스가 있으면 재사용
+  if (cachedGenAI && cachedKey && API_KEYS.includes(cachedKey)) {
+    return cachedGenAI;
+  }
   for (const key of API_KEYS) {
     try {
       const genAI = new GoogleGenerativeAI(key);
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
       const result = await model.generateContent("test");
       const response = await result.response;
-      if (response.text()) return genAI;
-    } catch {
+      if (response.text()) {
+        console.info('성공', key);
+        cachedGenAI = genAI;
+        cachedKey = key;
+        return genAI;
+      }
+    } catch (e){
+      console.log(e);
+      console.error('에러', key);
+      // 1초 대기 후 다음 키 시도
+      await new Promise(res => setTimeout(res, 1000));
       continue;
     }
   }
+  cachedGenAI = null;
+  cachedKey = null;
   return null;
-};
+}
 
 // 이미지 추출 결과 캐시 (같은 이미지에 대해 일관성 보장)
 const extractionCache = new Map<string, ExtractedScoreData>();

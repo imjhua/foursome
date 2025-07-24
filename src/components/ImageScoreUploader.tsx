@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { extractScoresFromImage, checkOllamaConnection } from '../utils/imageScoreExtractor';
+import { extractScoresFromImage, checkGeminiConnection } from '../utils/imageScoreExtractor';
 import type { ExtractedScoreData } from '../utils/imageScoreExtractor';
 import type { Team, Scorecard, Player, HoleScore } from '../types/golf';
 import { mockTeams, mockScorecards } from '../data/mockData';
@@ -45,7 +45,7 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
   }, [uploadedImages.length, onImagesUploaded]);
 
   const checkConnection = async () => {
-    const connected = await checkOllamaConnection();
+    const connected = await checkGeminiConnection();
     setIsConnected(connected);
   };
 

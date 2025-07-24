@@ -33,12 +33,6 @@ function App() {
     alert(`이미지 업로드 오류: ${error}`);
   };
 
-  const handleUseMockData = () => {
-    setScorecards(mockScorecards);
-    setTeams(mockTeams);
-    setIsUsingUploadedData(false);
-  };
-
   // 어워드를 메모이제이션하여 scorecards나 teams가 변경될 때만 다시 계산
   const awards = useMemo(() => {
     return calculateTeamAwards(scorecards, teams);

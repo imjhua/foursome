@@ -29,25 +29,28 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
   const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
   const [isConnected, setIsConnected] = useState<boolean | null>(null);
 
+  const checkConnection = React.useCallback(async () => {
+    if (isConnected !== null) return; // 이미 연결 상태가 결정된 경우 재시도하지 않음
+    const connected = await checkGeminiConnection();
+    setIsConnected(connected);
+  }, [isConnected]);
+  
   // 컴포넌트 마운트 시 Gemini 연결 확인 및 mockData 적용
   React.useEffect(() => {
-    checkConnection();
-    
+    if (isConnected === null) {
+      checkConnection();
+    }
     // 업로드된 이미지가 없으면 기본으로 mockData 적용
     if (uploadedImages.length === 0) {
       onScoresExtracted(mockScorecards, mockTeams);
     }
-  }, [uploadedImages.length, onScoresExtracted]);
+  }, [uploadedImages.length, onScoresExtracted, isConnected, checkConnection]);
 
   // 이미지 업로드 상태를 부모 컴포넌트에 알림
   React.useEffect(() => {
     onImagesUploaded?.(uploadedImages.length > 0);
   }, [uploadedImages.length, onImagesUploaded]);
-
-  const checkConnection = async () => {
-    const connected = await checkGeminiConnection();
-    setIsConnected(connected);
-  };
+  
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);

@@ -65,6 +65,23 @@ function App() {
           <div className="status-message-content">
             서버 연결 상태를 확인 중입니다...
           </div>
+        ) : isConnected === false ? (
+          <div className="server-error-message" style={{
+            background: '#fff3f3',
+            color: '#c62828',
+            border: '2px solid #f8d7da',
+            borderRadius: '12px',
+            padding: '2rem',
+            margin: '2rem auto',
+            maxWidth: '480px',
+            textAlign: 'center',
+            fontWeight: 600,
+            fontSize: '1.1rem',
+            boxShadow: '0 2px 12px rgba(220,53,69,0.08)'
+          }}>
+            <span style={{fontSize: '2rem', marginBottom: '0.5rem', display: 'block'}}>🚫</span>
+            서버 에러로 업로드가 불가능합니다.<br />API 키를 확인하거나, 관리자에게 문의하세요.
+          </div>
         ) : (
           <>
             {/* 이미지 업로드 섹션 */}

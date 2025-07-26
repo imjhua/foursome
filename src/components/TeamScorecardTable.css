@@ -1,5 +1,77 @@
+.custom-handicap-input {
+  width: 60px;
+  font-size: 1rem;
+  border-radius: 8px;
+  font-weight: 700;
 
+}
+.custom-handicap-input:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 0 2px #c3f7d6;
+  outline: none;
+}
+.highlight-score {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #7c4dff;
+  background: linear-gradient(135deg, #fffbe6 60%, #f3e8ff 100%);
+  border-radius: 8px;
+  padding: 4px 0;
+  margin-bottom: 2px;
+  letter-spacing: 0.5px;
+  display: inline-block;
+}
 
+.highlight-par {    
+  font-size: 0.8rem;
+  color: #795548;
+  font-weight: 600;
+}
+/* 스크롤 고정 컬럼 */
+.sticky-col {
+  position: sticky;
+  left: 0;
+  background: #fff;
+  z-index: 2;
+  box-shadow: 2px 0 4px -2px rgba(0,0,0,0.04);
+}
+
+.sticky-col + .sticky-col {
+  left: 80px; /* 팀/핸디 컬럼 너비에 맞게 조정 */
+}
+
+/* 팀 성과 행 고정 (선택적, 필요시 상단에 고정) */
+.sticky-stats-row {
+  position: sticky;
+  top: 40px; /* 헤더 높이에 맞게 조정 */
+  background: #f8f8ff;
+  z-index: 1;
+}
+.handicap-header {
+  min-width: 60px;
+  background: linear-gradient(135deg, #6c4caf, #7c4dff);
+  color: white;
+  font-weight: 700;
+  text-align: center;
+}
+.handicap-cell {
+  min-width: 60px;
+  text-align: center;
+}
+.handicap-cell input{
+  width: 60px;
+}
+.handicap-total-header {
+  min-width: 80px;
+  background: #a18cd1;
+  color: white;
+  font-weight: 700;
+  text-align: center;
+}
+.handicap-total-cell {
+  min-width: 80px;
+  text-align: center;
+}
 .score-legend-row {
   display: flex;
   align-items: center;
@@ -80,7 +152,6 @@
 
 .scorecard-table {
   width: 100%;
-  border-collapse: collapse;
   font-size: 0.85rem;
   min-width: 1200px;
 }

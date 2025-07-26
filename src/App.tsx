@@ -3,6 +3,7 @@ import { checkGeminiConnection } from './utils/imageScoreExtractor';
 import ImageScoreUploader from './components/ImageScoreUploader';
 import TeamScorecardTable from './components/TeamScorecardTable';
 import AwardResults from './components/AwardResults';
+import WinnerSection from './components/WinnerSection';
 import { mockTeams, mockScorecards } from './data/mockData';
 import { calculateTeamAwards } from './utils/scoreCalculator';
 import type { Team, Scorecard } from './types/golf';
@@ -14,6 +15,14 @@ function App() {
   const [isUsingUploadedData, setIsUsingUploadedData] = useState(false);
   const [hasUploadedImages, setHasUploadedImages] = useState(false);
   const [isConnected, setIsConnected] = useState<boolean | null>(null);
+  const [showWinner, setShowWinner] = useState(false);
+  // 팀별 핸디캡 상태 추가
+  const [teamHandicaps, setTeamHandicaps] = useState<Record<string, number>>({});
+
+  // 핸디캡 변경 핸들러
+  const handleHandicapChange = (teamId: string, value: number) => {
+    setTeamHandicaps(prev => ({ ...prev, [teamId]: value }));
+  };
 
   // 서버 연결 상태 체크 (최초 마운트 시 1회)
   useEffect(() => {
@@ -51,6 +60,20 @@ function App() {
     return calculateTeamAwards(scorecards, teams);
   }, [scorecards, teams]);
 
+  // 우승팀(최소 타수 팀) 계산
+  const winnerInfo = useMemo(() => {
+    if (!scorecards.length || !teams.length) return null;
+    // 팀별 총합 계산
+    const teamScores: { teamId: string; teamName: string; total: number }[] = teams.map(team => {
+      const teamScorecards = scorecards.filter(sc => sc.teamId === team.id);
+      const total = teamScorecards.reduce((sum, sc) => sum + sc.holes.reduce((hSum, h) => hSum + h.score, 0), 0);
+      return { teamId: team.id, teamName: team.name, total };
+    });
+    // 최소 타수 팀 찾기
+    const winner = teamScores.reduce((prev, curr) => (curr.total < prev.total ? curr : prev), teamScores[0]);
+    return winner;
+  }, [scorecards, teams]);
+
   return (
     <div className="app">
       <header className="app-header">
@@ -60,9 +83,21 @@ function App() {
 
       <main className="app-main">
         {/* 서버 연결 상태에 따라 분기 렌더링 */}
-        {/* 서버 연결 상태에 따라 분기 렌더링 */}
         {isConnected === null ? (
-          <div className="status-message-content">
+          <div className="status-message-content" style={{
+            background: '#fffbe6',
+            color: '#d48806',
+            border: '2px solid #ffe58f',
+            borderRadius: '12px',
+            padding: '2rem',
+            margin: '2rem auto',
+            maxWidth: '480px',
+            textAlign: 'center',
+            fontWeight: 600,
+            fontSize: '1.1rem',
+            boxShadow: '0 2px 12px rgba(255,193,7,0.08)'
+          }}>
+            <span style={{ fontSize: '2rem', marginBottom: '0.5rem', display: 'block' }}>⏳</span>
             서버 연결 상태를 확인 중입니다...
           </div>
         ) : isConnected === false ? (
@@ -79,13 +114,13 @@ function App() {
             fontSize: '1.1rem',
             boxShadow: '0 2px 12px rgba(220,53,69,0.08)'
           }}>
-            <span style={{fontSize: '2rem', marginBottom: '0.5rem', display: 'block'}}>🚫</span>
+            <span style={{ fontSize: '2rem', marginBottom: '0.5rem', display: 'block' }}>🚫</span>
             서버 에러로 업로드가 불가능합니다.<br />API 키를 확인하거나, 관리자에게 문의하세요.
           </div>
         ) : (
           <>
             {/* 이미지 업로드 섹션 */}
-            <ImageScoreUploader 
+            <ImageScoreUploader
               onScoresExtracted={handleScoresExtracted}
               onError={handleImageUploadError}
               onImagesUploaded={handleImagesUploaded}
@@ -94,16 +129,20 @@ function App() {
 
             {/* 팀별 스코어카드 테이블 */}
             <section className="scorecards-section">
-              <h2>📋 팀별 통합 스코어카드</h2>
               {hasUploadedImages && !isUsingUploadedData ? (
                 <div className="upload-guide-message">
                   <div className="guide-card">
-                    <span className="guide-icon">💡</span>
-                    <p>스코어사진 업로드 후 [팀 스코어카드 생성]버튼을 눌러 주세요.</p>
+                    <h2>팀별 통합 스코어카드</h2>
+                    <p>팀 스코어카드를 생성 해 주세요.</p>
                   </div>
                 </div>
               ) : (
-                <TeamScorecardTable teams={teams} scorecards={scorecards} />
+                <TeamScorecardTable
+                  teams={teams}
+                  scorecards={scorecards}
+                  teamHandicaps={teamHandicaps}
+                  onHandicapChange={handleHandicapChange}
+                />
               )}
             </section>
 
@@ -112,12 +151,25 @@ function App() {
               {hasUploadedImages && !isUsingUploadedData ? (
                 <div className="upload-guide-message">
                   <div className="guide-card">
-                    <span className="guide-icon">🏆</span>
+                    <h2>어워드 결과</h2>
                     <p>스코어 생성 후 어워드 결과를 확인하실 수 있습니다.</p>
                   </div>
                 </div>
               ) : (
-                <AwardResults awards={awards} />
+                <>
+                  <AwardResults awards={awards} />
+                  {isConnected === true && awards && (
+                    Object.values(awards).some(arr => Array.isArray(arr) && arr.length > 0) && (
+                      <WinnerSection
+                        winnerInfo={winnerInfo}
+                        teams={teams}
+                        show={showWinner}
+                        onShow={() => setShowWinner(true)}
+                        disabled={hasUploadedImages && !isUsingUploadedData}
+                      />
+                    )
+                  )}
+                </>
               )}
             </section>
           </>

@@ -6,9 +6,11 @@ import './TeamScorecardTable.css';
 interface TeamScorecardTableProps {
   teams: Team[];
   scorecards: Scorecard[];
+  teamHandicaps: Record<string, number>;
+  onHandicapChange: (teamId: string, value: number) => void;
 }
 
-const TeamScorecardTable: React.FC<TeamScorecardTableProps> = ({ teams, scorecards }) => {
+const TeamScorecardTable: React.FC<TeamScorecardTableProps> = ({ teams, scorecards, teamHandicaps, onHandicapChange }) => {
   const teamTotals = calculateTeamTotals(scorecards, teams);
   
   // 실제 파 정보를 스코어카드에서 추출
@@ -38,6 +40,13 @@ const TeamScorecardTable: React.FC<TeamScorecardTableProps> = ({ teams, scorecar
   });
   
   return (
+
+    <div className="results">
+      <div className="results-header">
+        <h2>팀별 통합 스코어카드</h2>
+        <p>팀별 순위표 (동점자는 같은 순위)</p>
+      </div>
+      
     <div className="team-scorecard-table">
       {/* 한 줄 범례: pill + 설명 나란히 */}
       <div className="score-legend-row">
@@ -57,10 +66,10 @@ const TeamScorecardTable: React.FC<TeamScorecardTableProps> = ({ teams, scorecar
         <table className="scorecard-table">
           <thead>
             <tr>
-              <th className="team-header">팀</th>
-              <th className="player-header">플레이어</th>
+              <th className="team-header sticky-col">팀/핸디</th>
+              <th className="player-header sticky-col">플레이어</th>
               {Array.from({ length: 18 }, (_, i) => i + 1).map(hole => (
-                <th key={hole} className={`hole-header ${hole === 9 ? 'front-nine-last' : hole === 18 ? 'back-nine-last' : ''}`}>
+                <th key={hole} className={`hole-header ${hole === 9 ? 'front-nine-last' : hole === 18 ? 'back-nine-last' : ''}`}> 
                   <div className="hole-info">
                     <div className="hole-number">{hole}</div>
                     <div className="par-number">Par {actualPars[hole - 1]}</div>
@@ -70,6 +79,7 @@ const TeamScorecardTable: React.FC<TeamScorecardTableProps> = ({ teams, scorecar
               <th className="total-header">전반</th>
               <th className="total-header">후반</th>
               <th className="final-total-header">합계</th>
+              <th className="handicap-total-header">핸디 적용 합계</th>
             </tr>
           </thead>
           <tbody>
@@ -106,19 +116,28 @@ const TeamScorecardTable: React.FC<TeamScorecardTableProps> = ({ teams, scorecar
               // 팀 스코어 행 (포썸에서는 하나의 행으로 충분)
               teamRows.push(
                 <tr key={`${team.id}-scores`} className="team-score-row">
-                  <td className="team-name-cell" rowSpan={2}>
-                    <div className="team-name">{team.name}</div>
+                  <td className="team-name-cell sticky-col" rowSpan={2}>
+                    <div className="team-name-handicap">
+                      <div className="team-name">{team.name}</div>
+                      <input
+                        type="number"
+                        className="team-handicap-input custom-handicap-input"
+                        value={teamHandicaps[team.id] ?? 0}
+                        min={0}
+                        onChange={e => onHandicapChange(team.id, Number(e.target.value))}
+                      />
+                    </div>
                   </td>
-                  <td className="players-cell">
+                  <td className="players-cell sticky-col" rowSpan={2}>
                     <div className="player-names">
                       <div className="player-name">{player1?.name}</div>
                       <div className="player-name">{player2?.name}</div>
                     </div>
                   </td>
                   {teamHoleScores.map((holeScore, holeIndex) => (
-                    <td key={holeIndex + 1} className={`score-cell ${holeIndex === 8 ? 'front-nine-last' : holeIndex === 17 ? 'back-nine-last' : ''}`}>
+                    <td key={holeIndex + 1} className={`score-cell ${holeIndex === 8 ? 'front-nine-last' : holeIndex === 17 ? 'back-nine-last' : ''}`}> 
                       {holeScore ? (
-                        <span className={`score ${getScoreType(holeScore.score, holeScore.par)}`}>
+                        <span className={`score ${getScoreType(holeScore.score, holeScore.par)}`}> 
                           {holeScore.score}
                         </span>
                       ) : (
@@ -127,16 +146,21 @@ const TeamScorecardTable: React.FC<TeamScorecardTableProps> = ({ teams, scorecar
                     </td>
                   ))}
                   <td className="subtotal-cell">
-                    <div className="subtotal-score">{frontNine}</div>
-                    <div className="subtotal-par">({frontNine - frontNinePar > 0 ? '+' : ''}{frontNine - frontNinePar})</div>
+                    <div className="subtotal-score highlight-score">{frontNine}</div>
+                    <div className="subtotal-par highlight-par">({frontNine - frontNinePar > 0 ? '+' : ''}{frontNine - frontNinePar})</div>
                   </td>
                   <td className="subtotal-cell">
-                    <div className="subtotal-score">{backNine}</div>
-                    <div className="subtotal-par">({backNine - backNinePar > 0 ? '+' : ''}{backNine - backNinePar})</div>
+                    <div className="subtotal-score highlight-score">{backNine}</div>
+                    <div className="subtotal-par highlight-par">({backNine - backNinePar > 0 ? '+' : ''}{backNine - backNinePar})</div>
                   </td>
                   <td className="final-total-cell">
-                    <div className="final-total">{total}</div>
-                    <div className="final-par">({total - totalPar > 0 ? '+' : ''}{total - totalPar})</div>
+                    <div className="final-total highlight-score">{total}</div>
+                    <div className="final-par highlight-par">({total - totalPar > 0 ? '+' : ''}{total - totalPar})</div>
+                  </td>
+                  {/* 핸디 적용 합계 */}
+                  <td className="handicap-total-cell">
+                    <div className="handicap-total highlight-score">{total + (teamHandicaps[team.id] ?? 0)}</div>
+                    <div className="handicap-par highlight-par">({total + totalPar - (teamHandicaps[team.id] ?? 0) > 0 ? '+' : ''}{total - totalPar + (teamHandicaps[team.id] ?? 0)})</div>
                   </td>
                 </tr>
               );
@@ -145,8 +169,8 @@ const TeamScorecardTable: React.FC<TeamScorecardTableProps> = ({ teams, scorecar
               const teamStats = teamTotals[team.id];
               if (teamStats) {
                 teamRows.push(
-                  <tr key={`${team.id}-stats`} className="team-stats-row">
-                    <td className="stats-label-cell" colSpan={2}>
+                  <tr key={`${team.id}-stats`} className="team-stats-row sticky-stats-row">
+                    <td className="stats-label-cell sticky-col" colSpan={2}>
                       <div className="team-stats-label">팀 성과</div>
                     </td>
                     <td className="stats-content-cell" colSpan={18}>
@@ -183,6 +207,7 @@ const TeamScorecardTable: React.FC<TeamScorecardTableProps> = ({ teams, scorecar
           </tbody>
         </table>
       </div>
+    </div>
     </div>
   );
 };

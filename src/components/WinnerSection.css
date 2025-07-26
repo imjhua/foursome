@@ -1,0 +1,112 @@
+.winner-section {
+  margin: 2.5rem auto 0 auto;
+  text-align: center;
+  padding: 2.5rem 0 2.5rem 0;
+  background: linear-gradient(135deg, #ffe58f 0%, #ffd666 100%);
+  border-radius: 18px;
+  box-shadow: 0 6px 32px rgba(255,193,7,0.18);
+  max-width: 600px;
+  position: relative;
+  overflow: hidden;
+  animation: winner-area-fadein 1s;
+}
+
+@keyframes winner-area-fadein {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.winner-btn-glow {
+  box-shadow: 0 0 24px 6px #ffd66688, 0 2px 8px #faad14;
+  animation: winner-btn-glow 1.5s infinite alternate;
+}
+@keyframes winner-btn-glow {
+  from { box-shadow: 0 0 12px 2px #ffd66688, 0 2px 8px #faad14; }
+  to { box-shadow: 0 0 32px 12px #ffd666cc, 0 2px 16px #faad14; }
+}
+
+.winner-team-info {
+  background: linear-gradient(135deg, #fffbe6 0%, #fff1b8 100%);
+  border: 2px solid #ffe58f;
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin: 1.5rem auto 0 auto;
+  max-width: 420px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.18rem;
+  color: #d48806;
+  box-shadow: 0 2px 16px rgba(255,193,7,0.12);
+  position: relative;
+  z-index: 1;
+}
+
+.winner-trophy {
+  font-size: 2.5rem;
+  margin-bottom: 0.7rem;
+  display: block;
+  text-shadow: 0 2px 12px #ffd666;
+}
+
+.winner-team-name {
+  font-size: 1.25rem;
+  color: #faad14;
+  font-weight: 900;
+}
+
+.winner-total {
+  font-size: 1.05rem;
+  color: #333;
+}
+
+.winner-players {
+  margin-top: 1.2rem;
+  background: #fffbe6;
+  border-radius: 10px;
+  padding: 0.8rem;
+  box-shadow: 0 1px 8px #ffe58f44;
+}
+.winner-players-title {
+  font-weight: 800;
+  color: #faad14;
+  font-size: 1.08rem;
+}
+.winner-players-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+.winner-player-item {
+  background: #fff;
+  border-radius: 6px;
+  padding: 0.4rem 1.2rem;
+  font-weight: 600;
+  color: #d48806;
+  box-shadow: 0 1px 4px #ffd66622;
+  font-size: 1rem;
+}
+
+.winner-bg-left {
+  position: absolute;
+  left: -60px;
+  top: -60px;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, #ffd66688 0%, #fffbe6 80%);
+  filter: blur(8px);
+  z-index: 0;
+}
+.winner-bg-right {
+  position: absolute;
+  right: -40px;
+  bottom: -40px;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, #faad14cc 0%, #fffbe6 80%);
+  filter: blur(10px);
+  z-index: 0;
+}

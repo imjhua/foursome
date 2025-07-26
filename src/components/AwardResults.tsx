@@ -94,9 +94,9 @@ const AwardResults: React.FC<AwardResultsProps> = ({ awards }) => {
   };
 
   return (
-    <div className="award-results">
-      <div className="award-results-header">
-        <h2>🏆 어워드 결과</h2>
+    <div className="results">
+      <div className="results-header">
+        <h2>어워드 결과</h2>
         <p>팀별 순위표 (동점자는 같은 순위)</p>
       </div>
       

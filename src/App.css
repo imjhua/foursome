@@ -68,13 +68,6 @@
   margin: 30px 0;
 }
 
-.scorecards-section h2 {
-  text-align: center;
-  color: #333;
-  font-size: 1.8em;
-  margin-bottom: 25px;
-}
-
 .scorecards-grid {
   display: flex;
   flex-direction: column;
@@ -113,12 +106,6 @@
   width: 100%;
 }
 
-.guide-card .guide-icon {
-  font-size: 3em;
-  display: block;
-  margin-bottom: 15px;
-}
-
 .guide-card p {
   margin: 0;
   color: #495057;
@@ -150,10 +137,6 @@
     margin: 0 10px;
   }
 
-  .guide-card .guide-icon {
-    font-size: 2.5em;
-  }
-
   .guide-card p {
     font-size: 1em;
   }
@@ -163,8 +146,33 @@
   .app-header h1 {
     font-size: 1.6em;
   }
-  
-  .scorecards-section h2 {
-    font-size: 1.5em;
-  }
+}
+
+.results {
+  margin: 30px 0;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 30px;
+  color: #333;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e9ecef;
+}
+
+.results-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.results-header h2 {
+  margin: 0 0 8px 0;
+  font-size: 2em;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.results-header p {
+  margin: 0;
+  color: #6c757d;
+  font-size: 1em;
+  font-weight: 400;
 }

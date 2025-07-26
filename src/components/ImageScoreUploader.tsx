@@ -30,6 +30,7 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
 }) => {
   const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
   const [selectedImage, setSelectedImage] = useState<UploadedImage | null>(null);
+  const [teamCount, setTeamCount] = useState<number>(0);
 
   // 업로드된 이미지가 없으면 기본으로 mockData 적용
   React.useEffect(() => {
@@ -276,11 +277,8 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
     
     // 성공 메시지
     alert(`${teams.length}개 팀의 스코어를 생성했습니다!`);
+    setTeamCount(teams.length);
   }, [uploadedImages, onScoresExtracted, onError]);
-
-  uploadedImages.forEach(image => {
-    console.log(image.extractedData);
-  });
 
   return (
     <div className="image-score-uploader">
@@ -474,7 +472,7 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
             className="generate-teams-btn"
             disabled={uploadedImages.some(img => img.isProcessing) || uploadedImages.every(img => img.error)}
           >
-            팀 스코어카드 생성
+            {teamCount === uploadedImages.length ? '팀 스코어카드 생성' : '팀 스코어카드 다시 생성'}
           </button>
         </div>
       )}

@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { extractScoresFromImage, checkGeminiConnection } from '../utils/imageScoreExtractor';
+import { extractScoresFromImage } from '../utils/imageScoreExtractor';
 import type { ExtractedScoreData } from '../utils/imageScoreExtractor';
 import type { Team, Scorecard, Player, HoleScore } from '../types/golf';
 import { mockTeams, mockScorecards } from '../data/mockData';
@@ -19,32 +19,24 @@ interface ImageScoreUploaderProps {
   onScoresExtracted: (scorecards: Scorecard[], teams: Team[]) => void;
   onError: (error: string) => void;
   onImagesUploaded?: (hasImages: boolean) => void;
+  isConnected: boolean | null;
 }
 
 const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
   onScoresExtracted,
   onError,
-  onImagesUploaded
+  onImagesUploaded,
+  isConnected
 }) => {
   const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
-  const [isConnected, setIsConnected] = useState<boolean | null>(null);
+  const [selectedImage, setSelectedImage] = useState<UploadedImage | null>(null);
 
-  const checkConnection = React.useCallback(async () => {
-    if (isConnected !== null) return; // 이미 연결 상태가 결정된 경우 재시도하지 않음
-    const connected = await checkGeminiConnection();
-    setIsConnected(connected);
-  }, [isConnected]);
-
-  // 컴포넌트 마운트 시 Gemini 연결 확인 및 mockData 적용
+  // 업로드된 이미지가 없으면 기본으로 mockData 적용
   React.useEffect(() => {
-    if (isConnected === null) {
-      checkConnection();
-    }
-    // 업로드된 이미지가 없으면 기본으로 mockData 적용
     if (uploadedImages.length === 0) {
       onScoresExtracted(mockScorecards, mockTeams);
     }
-  }, [uploadedImages.length, onScoresExtracted, isConnected, checkConnection]);
+  }, [uploadedImages.length, onScoresExtracted]);
 
   // 이미지 업로드 상태를 부모 컴포넌트에 알림
   React.useEffect(() => {
@@ -62,8 +54,13 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
       return;
     }
 
-    // 각 파일에 대해 검증 및 추가
     for (const file of files) {
+      // 중복 이미지 체크 (파일명+크기 기준)
+      const isDuplicate = uploadedImages.some(img => img.file.name === file.name && img.file.size === file.size);
+      if (isDuplicate) {
+        continue;
+      }
+
       // 이미지 파일 확인
       if (!file.type.startsWith('image/')) {
         onError(`${file.name}은 이미지 파일이 아닙니다.`);
@@ -89,7 +86,6 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
           isProcessing: true
         };
 
-        // 이미지 목록에 추가
         setUploadedImages(prev => [...prev, newImage]);
 
         // 스코어 추출 시작
@@ -100,7 +96,6 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
             throw new Error(result.error || '스코어 추출에 실패했습니다.');
           }
 
-          // 성공한 경우 데이터 업데이트
           setUploadedImages(prev => 
             prev.map(img => 
               img.id === imageId 
@@ -110,7 +105,6 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
           );
 
         } catch (error) {
-          // 실패한 경우 에러 업데이트
           const errorMessage = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.';
           setUploadedImages(prev => 
             prev.map(img => 
@@ -124,7 +118,6 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
       reader.readAsDataURL(file);
     }
 
-    // 파일 입력 초기화
     event.target.value = '';
   };
 
@@ -288,7 +281,7 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
     onScoresExtracted(scorecards, teams);
     
     // 성공 메시지
-    alert(`${teams.length}개 팀(총 ${teams.reduce((total, team) => total + team.players.length, 0)}명)의 스코어를 생성했습니다!`);
+    alert(`${teams.length}개 팀의 스코어를 생성했습니다!`);
   }, [uploadedImages, onScoresExtracted, onError]);
 
   return (
@@ -309,7 +302,7 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
           {isConnected === null ? (
             <p>서버 연결 상태를 확인 중입니다...</p>
           ) : isConnected === true ? (
-            <p>골프 스코어카드 사진을 업로드해주세요.</p>
+            <p>골프 스코어카드 사진을 업로드해주세요. (동일한 사진 중복업로드 불가)</p>
           ) : (
             <p>서버 에러로 업로드가 불가능합니다. API 키를 확인하거나, 관리자에게 문의하세요.</p>
           )}
@@ -344,13 +337,6 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
         <div className="uploaded-images">
           <div className="images-header">
             <h4>업로드된 이미지 ({uploadedImages.length}개)</h4>
-            <button 
-              onClick={handleGenerateTeams}
-              className="generate-teams-btn"
-              disabled={uploadedImages.some(img => img.isProcessing) || uploadedImages.every(img => img.error)}
-            >
-              팀 스코어카드 생성
-            </button>
           </div>
           
           <div className="images-grid">
@@ -382,8 +368,74 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
                     src={image.preview} 
                     alt={`스코어카드 ${index + 1}`}
                     className="image-preview-small"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => setSelectedImage(image)}
                   />
                 </div>
+      {/* 이미지 확대 모달 (별도 레이어, 알럿창 스타일) */}
+      {selectedImage && (
+        <div className="image-modal-overlay" style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          background: 'rgba(0,0,0,0.5)',
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }} onClick={() => setSelectedImage(null)}>
+          <div className="image-modal-content" style={{
+            background: '#fff',
+            borderRadius: '16px',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.25)',
+            padding: '32px 32px 24px 32px',
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            maxWidth: '100vw',
+            maxHeight: '100vh',
+          }} onClick={e => e.stopPropagation()}>
+            <button className="image-modal-close" style={{
+              position: 'absolute',
+              top: '-28px',
+              right: '-28px',
+              width: '48px',
+              height: '48px',
+              fontSize: '2.2rem',
+              background: 'rgba(255,255,255,0.95)',
+              border: '2px solid #888',
+              borderRadius: '50%',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
+              cursor: 'pointer',
+              color: '#222',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 10,
+              transition: 'background 0.2s',
+            }} onClick={() => setSelectedImage(null)}>
+              &times;
+            </button>
+            <img
+              src={selectedImage.preview}
+              alt="확대 이미지"
+              style={{
+                width: 'calc(52vw)',
+                maxWidth: '900px',
+                height: 'auto',
+                maxHeight: '80vh',
+                borderRadius: '12px',
+                boxShadow: '0 2px 16px rgba(0,0,0,0.12)',
+                objectFit: 'contain',
+                transition: 'all 0.2s',
+              }}
+            />
+          </div>
+        </div>
+      )}
                 
                 <div className="image-status">
                   {image.isProcessing ? (
@@ -400,7 +452,7 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
                     <div className="success">
                       <span className="success-icon">✅</span>
                       <span>
-                        {image.extractedData.teams.reduce((total, team) => total + team.players.length, 0)}명 추출완료
+                        추출완료
                         <div className="extracted-teams">
                           {image.extractedData.teams.map((team, teamIndex) => (
                             <div key={teamIndex} className="team-group">
@@ -422,6 +474,13 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
               </div>
             ))}
           </div>
+          <button 
+            onClick={handleGenerateTeams}
+            className="generate-teams-btn"
+            disabled={uploadedImages.some(img => img.isProcessing) || uploadedImages.every(img => img.error)}
+          >
+            팀 스코어카드 생성
+          </button>
         </div>
       )}
     </div>

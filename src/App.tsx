@@ -1,4 +1,5 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { checkGeminiConnection } from './utils/imageScoreExtractor';
 import ImageScoreUploader from './components/ImageScoreUploader';
 import TeamScorecardTable from './components/TeamScorecardTable';
 import AwardResults from './components/AwardResults';
@@ -12,6 +13,18 @@ function App() {
   const [scorecards, setScorecards] = useState<Scorecard[]>(mockScorecards);
   const [isUsingUploadedData, setIsUsingUploadedData] = useState(false);
   const [hasUploadedImages, setHasUploadedImages] = useState(false);
+  const [isConnected, setIsConnected] = useState<boolean | null>(null);
+
+  // 서버 연결 상태 체크 (최초 마운트 시 1회)
+  useEffect(() => {
+    let mounted = true;
+    const fetchConnection = async () => {
+      const connected = await checkGeminiConnection();
+      if (mounted) setIsConnected(connected);
+    };
+    fetchConnection();
+    return () => { mounted = false; };
+  }, []);
 
   const handleScoresExtracted = (scorecards: Scorecard[], teams: Team[]) => {
     setScorecards(scorecards);
@@ -46,41 +59,52 @@ function App() {
       </header>
 
       <main className="app-main">
-        {/* 이미지 업로드 섹션 */}
-        <ImageScoreUploader 
-          onScoresExtracted={handleScoresExtracted}
-          onError={handleImageUploadError}
-          onImagesUploaded={handleImagesUploaded}
-        />
+        {/* 서버 연결 상태에 따라 분기 렌더링 */}
+        {/* 서버 연결 상태에 따라 분기 렌더링 */}
+        {isConnected === null ? (
+          <div className="status-message-content">
+            서버 연결 상태를 확인 중입니다...
+          </div>
+        ) : (
+          <>
+            {/* 이미지 업로드 섹션 */}
+            <ImageScoreUploader 
+              onScoresExtracted={handleScoresExtracted}
+              onError={handleImageUploadError}
+              onImagesUploaded={handleImagesUploaded}
+              isConnected={isConnected}
+            />
 
-        {/* 팀별 스코어카드 테이블 */}
-        <section className="scorecards-section">
-          <h2>📋 팀별 통합 스코어카드</h2>
-          {hasUploadedImages && !isUsingUploadedData ? (
-            <div className="upload-guide-message">
-              <div className="guide-card">
-                <span className="guide-icon">💡</span>
-                <p>스코어사진 업로드 후 [팀 스코어카드 생성]버튼을 눌러 주세요.</p>
-              </div>
-            </div>
-          ) : (
-            <TeamScorecardTable teams={teams} scorecards={scorecards} />
-          )}
-        </section>
+            {/* 팀별 스코어카드 테이블 */}
+            <section className="scorecards-section">
+              <h2>📋 팀별 통합 스코어카드</h2>
+              {hasUploadedImages && !isUsingUploadedData ? (
+                <div className="upload-guide-message">
+                  <div className="guide-card">
+                    <span className="guide-icon">💡</span>
+                    <p>스코어사진 업로드 후 [팀 스코어카드 생성]버튼을 눌러 주세요.</p>
+                  </div>
+                </div>
+              ) : (
+                <TeamScorecardTable teams={teams} scorecards={scorecards} />
+              )}
+            </section>
 
-        {/* 어워드 결과 */}
-        <section className="awards-section">
-          {hasUploadedImages && !isUsingUploadedData ? (
-            <div className="upload-guide-message">
-              <div className="guide-card">
-                <span className="guide-icon">🏆</span>
-                <p>스코어 생성 후 어워드 결과를 확인하실 수 있습니다.</p>
-              </div>
-            </div>
-          ) : (
-            <AwardResults awards={awards} />
-          )}
-        </section>
+            {/* 어워드 결과 */}
+            <section className="awards-section">
+              {hasUploadedImages && !isUsingUploadedData ? (
+                <div className="upload-guide-message">
+                  <div className="guide-card">
+                    <span className="guide-icon">🏆</span>
+                    <p>스코어 생성 후 어워드 결과를 확인하실 수 있습니다.</p>
+                  </div>
+                </div>
+              ) : (
+                <AwardResults awards={awards} />
+              )}
+            </section>
+          </>
+        )}
       </main>
     </div>
   );

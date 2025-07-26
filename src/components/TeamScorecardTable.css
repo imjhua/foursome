@@ -27,24 +27,24 @@
   margin-right: 12px;
 }
 .score-legend-row .legend-score.eagle {
-  border: 3px solid #4caf50;
+  border: 2px solid #4caf50;
   color: #4caf50;
 }
 .score-legend-row .legend-score.birdie {
-  border: 3px solid #ffc107;
+  border: 2px solid #ffc107;
   color: #ffc107;
 }
 .score-legend-row .legend-score.par {
-  border: 3px solid #6c757d;
+  border: 2px solid #6c757d;
   color: #6c757d;
   border-radius: 2px;
 }
 .score-legend-row .legend-score.bogey {
-  border: 3px solid #0d1977;
+  border: 2px solid #0d1977;
   color: #0d1977;
 }
 .score-legend-row .legend-score.doublepar {
-  border: 3px solid #dc3545;
+  border: 2px solid #dc3545;
   color: #dc3545;
 }
 .table-container {

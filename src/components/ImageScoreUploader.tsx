@@ -284,6 +284,10 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
     alert(`${teams.length}개 팀의 스코어를 생성했습니다!`);
   }, [uploadedImages, onScoresExtracted, onError]);
 
+  uploadedImages.forEach(image => {
+    console.log(image.extractedData);
+  });
+
   return (
     <div className="image-score-uploader">
       <div className="uploader-header">
@@ -443,14 +447,13 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
                     </div>
                   ) : image.error ? (
                     <div className="error">
-                      <span className="error-icon">❌</span>
-                      <span className="error-message">{image.error}</span>
+                      <span className="icon">❌ 추출실패</span>
+                      <div className="error-message">{image.error}</div>
                     </div>
                   ) : image.extractedData ? (
                     <div className="success">
-                      <span className="success-icon">✅</span>
+                      <span className="icon">✅ 추출완료</span>
                       <span>
-                        추출완료
                         <div className="extracted-teams">
                           {image.extractedData.teams.map((team, teamIndex) => (
                             <div key={teamIndex} className="team-group">

@@ -131,8 +131,8 @@ export const extractScoresFromImage = async (file: File): Promise<ExtractedScore
     }
 
     // 데이터 검증
-    if (!parsedData.teams || !Array.isArray(parsedData.teams)) {
-      throw new Error('잘못된 데이터 형식: teams 배열이 없습니다.');
+    if (!parsedData.teams || !Array.isArray(parsedData.teams) || parsedData.teams.length === 0) {
+      throw new Error('팀 정보가 없습니다. 올바른 스코어카드 이미지를 업로드해주세요.');
     }
 
     // 팀과 스코어 검증 및 정리
@@ -190,11 +190,13 @@ export const extractScoresFromImage = async (file: File): Promise<ExtractedScore
 
     const extractedPars = parsedData.pars ? validatePars(parsedData.pars) : [4, 3, 4, 5, 4, 3, 4, 4, 5, 4, 3, 4, 5, 4, 3, 4, 4, 5];
 
+    // teams가 실제로 유효한지(빈 배열인지) 최종 체크
+    const isValidTeams = Array.isArray(validatedTeams) && validatedTeams.length > 0;
     const result: ExtractedScoreData = {
       teams: validatedTeams,
       holes: 18,
       pars: extractedPars,
-      success: true
+      success: isValidTeams
     };
 
     extractionCache.set(cacheKey, result);

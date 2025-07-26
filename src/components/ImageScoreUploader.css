@@ -208,7 +208,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 4px;
+  margin-bottom: 16px;
 }
 
 .image-number {
@@ -303,29 +303,17 @@
 }
 
 .error {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
   color: #dc3545;
 }
 
-.error-icon {
-  font-size: 1.1em;
-  flex-shrink: 0;
-}
-
 .error-message {
+  margin: 10px 0;
   font-size: 0.85em;
   line-height: 1.4;
 }
 
 .success {
   color: #28a745;
-}
-
-.success-icon {
-  font-size: 1.1em;
-  margin-right: 6px;
 }
 
 .extracted-players {

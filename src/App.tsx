@@ -62,17 +62,20 @@ function App() {
 
   // 우승팀(최소 타수 팀) 계산
   const winnerInfo = useMemo(() => {
-    if (!scorecards.length || !teams.length) return null;
-    // 팀별 총합 계산
-    const teamScores: { teamId: string; teamName: string; total: number }[] = teams.map(team => {
+    if (!scorecards.length || !teams.length) return [];
+    // 팀별 핸디 적용 합계 계산
+    const teamScores: { teamId: string; teamName: string; total: number; handicap: number }[] = teams.map(team => {
       const teamScorecards = scorecards.filter(sc => sc.teamId === team.id);
-      const total = teamScorecards.reduce((sum, sc) => sum + sc.holes.reduce((hSum, h) => hSum + h.score, 0), 0);
-      return { teamId: team.id, teamName: team.name, total };
+      const rawTotal = teamScorecards.reduce((sum, sc) => sum + sc.holes.reduce((hSum, h) => hSum + h.score, 0), 0);
+      const handicap = teamHandicaps[team.id] ?? 0;
+      const total = rawTotal - handicap;
+      return { teamId: team.id, teamName: team.name, total, handicap };
     });
-    // 최소 타수 팀 찾기
-    const winner = teamScores.reduce((prev, curr) => (curr.total < prev.total ? curr : prev), teamScores[0]);
-    return winner;
-  }, [scorecards, teams]);
+    // 최소 핸디 적용 합계 값 찾기
+    const minTotal = Math.min(...teamScores.map(ts => ts.total));
+    // 공동우승팀 모두 반환
+    return teamScores.filter(ts => ts.total === minTotal);
+  }, [scorecards, teams, teamHandicaps]);
 
   return (
     <div className="app">
@@ -161,8 +164,9 @@ function App() {
                   {isConnected === true && awards && (
                     Object.values(awards).some(arr => Array.isArray(arr) && arr.length > 0) && (
                       <WinnerSection
-                        winnerInfo={winnerInfo}
+                        winnerInfos={winnerInfo}
                         teams={teams}
+                        teamHandicaps={teamHandicaps}
                         show={showWinner}
                         onShow={() => setShowWinner(true)}
                         disabled={hasUploadedImages && !isUsingUploadedData}

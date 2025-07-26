@@ -159,8 +159,8 @@ const TeamScorecardTable: React.FC<TeamScorecardTableProps> = ({ teams, scorecar
                   </td>
                   {/* 핸디 적용 합계 */}
                   <td className="handicap-total-cell">
-                    <div className="handicap-total highlight-score">{total + (teamHandicaps[team.id] ?? 0)}</div>
-                    <div className="handicap-par highlight-par">({total + totalPar - (teamHandicaps[team.id] ?? 0) > 0 ? '+' : ''}{total - totalPar + (teamHandicaps[team.id] ?? 0)})</div>
+                    <div className="handicap-total highlight-score">{total - (teamHandicaps[team.id] ?? 0)}</div>
+                    <div className="handicap-par highlight-par">({total - totalPar - (teamHandicaps[team.id] ?? 0) > 0 ? '+' : ''}{total - totalPar - (teamHandicaps[team.id] ?? 0)})</div>
                   </td>
                 </tr>
               );

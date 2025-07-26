@@ -33,24 +33,25 @@
   margin: 1.5rem auto 0 auto;
   max-width: 420px;
   text-align: center;
-  font-weight: 700;
   font-size: 1.18rem;
-  color: #d48806;
   box-shadow: 0 2px 16px rgba(255,193,7,0.12);
-  position: relative;
-  z-index: 1;
+  /* position: relative;
+  z-index: 1; */
 }
 
 .winner-trophy {
+  font-weight: 700;
+  color: #d48806;
   font-size: 2.5rem;
-  margin-bottom: 0.7rem;
   display: block;
-  text-shadow: 0 2px 12px #ffd666;
 }
 
+.winner-team-block{
+  margin-top: 1.2rem;
+}
 .winner-team-name {
-  font-size: 1.25rem;
-  color: #faad14;
+  font-size: 1.5rem;
+  color: #d28a1e;
   font-weight: 900;
 }
 

@@ -44,9 +44,9 @@ const extractionCache = new Map<string, ExtractedScoreData>();
 export interface ExtractedScoreData {
   teams: {
     teamName: string;
+    scores: number[];
     players: {
       name: string;
-      scores: number[];
     }[];
   }[];
   holes: number;
@@ -136,36 +136,28 @@ export const extractScoresFromImage = async (file: File): Promise<ExtractedScore
     }
 
     // 팀과 스코어 검증 및 정리
-    const validatedTeams = parsedData.teams.map((team: { teamName?: string; players?: unknown[] }, teamIndex: number) => {
+    const validatedTeams = parsedData.teams.map((team: { teamName?: string; scores?: unknown[]; players?: unknown[] }, teamIndex: number) => {
+      // 팀별 scores 검증
+      const scores = Array.isArray(team.scores) ? team.scores : [];
+      while (scores.length < 18) scores.push(4);
+      scores.splice(18);
+      const validatedScores = scores.map((score: unknown) => {
+        const num = parseInt(String(score));
+        return isNaN(num) || num < 1 || num > 12 ? 4 : num;
+      });
+
+      // 플레이어 이름만 추출
       const players = Array.isArray(team.players) ? team.players : [];
-
       const validatedPlayers = players.map((playerData: unknown, playerIndex: number) => {
-        const player = playerData as { name?: string; scores?: unknown[] };
-        const scores = Array.isArray(player.scores) ? player.scores : [];
-
-        // 18홀로 맞추기
-        while (scores.length < 18) {
-          scores.push(4);
-        }
-        scores.splice(18);
-
-        // 스코어 범위 검증 (1~12)
-        const validatedScores = scores.map((score: unknown) => {
-          const num = parseInt(String(score));
-          if (isNaN(num) || num < 1 || num > 12) {
-            return 4;
-          }
-          return num;
-        });
-
+        const player = playerData as { name?: string };
         return {
-          name: player.name || `플레이어 ${playerIndex + 1}`,
-          scores: validatedScores
+          name: player.name || `플레이어 ${playerIndex + 1}`
         };
       });
 
       return {
-        teamName: team.teamName || `팀 ${teamIndex + 1}`,
+        teamName: team.teamName || ('팀 ' + (teamIndex + 1)),
+        scores: validatedScores,
         players: validatedPlayers
       };
     });
@@ -226,54 +218,39 @@ const standardPars = [4, 3, 4, 5, 4, 3, 4, 4, 5, 4, 3, 4, 5, 4, 3, 4, 4, 5];
 export const convertToAppFormat = (extractedData: ExtractedScoreData, imageOrder: number): { teams: Team[], scorecards: Scorecard[] } => {
   const teams: Team[] = [];
   const scorecards: Scorecard[] = [];
-  
   const pars = extractedData.pars && extractedData.pars.length === 18 ? extractedData.pars : standardPars;
   extractedData.teams.forEach((teamData, teamIndex) => {
-    teamData.players.forEach((playerData, playerIndex) => {
-      const teamLetter = String.fromCharCode(65 + playerIndex); // A, B, C, ...
-      const playerId = `extracted-${imageOrder}-${teamIndex + 1}-${teamLetter}`;
-      const teamId = `team-${imageOrder}-${teamIndex + 1}-${teamLetter}`;
-
-      // 업로드 순서를 prefix로 붙인 팀명
-      const teamName = `${imageOrder}-${teamData.teamName}`;
-
-      // Player 생성
-      const player: Player = {
-        id: playerId,
-        name: playerData.name
+    const teamId = `team-${imageOrder}-${teamIndex + 1}`;
+    const teamName = `${imageOrder}-${teamData.teamName}`;
+    const teamPlayers: Player[] = teamData.players.map((player, playerIndex) => ({
+      id: `player-${imageOrder}-${teamIndex + 1}-${playerIndex + 1}`,
+      name: player.name
+    }));
+    const team: Team = {
+      id: teamId,
+      name: teamName,
+      players: teamPlayers
+    };
+    teams.push(team);
+    // 팀별 scores를 사용해 HoleScore 생성
+    const holes: HoleScore[] = teamData.scores.map((score: number, holeIndex: number) => {
+      const par = pars[holeIndex] || 4;
+      return {
+        hole: holeIndex + 1,
+        par,
+        score,
+        displayType: getScoreType(score, par)
       };
-
-      // Team 생성
-      const team: Team = {
-        id: teamId,
-        name: teamName,
-        players: [player]
-      };
-
-      // HoleScore 배열 생성 (displayType 추가, 실제 pars 사용)
-      const holes: HoleScore[] = playerData.scores.map((score: number, holeIndex: number) => {
-        const par = pars[holeIndex] || 4;
-        return {
-          hole: holeIndex + 1,
-          par,
-          score,
-          displayType: getScoreType(score, par)
-        };
-      });
-
-      // Scorecard 생성
-      const scorecard: Scorecard = {
-        id: `scorecard-${imageOrder}-${teamIndex + 1}-${teamLetter}`,
-        teamId: teamId,
-        roundDate: new Date().toISOString().split('T')[0],
-        holes: holes
-      };
-
-      teams.push(team);
-      scorecards.push(scorecard);
     });
+    // Scorecard 생성 (팀별)
+    const scorecard: Scorecard = {
+      id: `scorecard-${teamId}`,
+      teamId: teamId,
+      roundDate: new Date().toISOString().split('T')[0],
+      holes: holes
+    };
+    scorecards.push(scorecard);
   });
-  
   return { teams, scorecards };
 };
 
@@ -310,10 +287,10 @@ const PROMPT = `
   "teams": [
     {
       "teamName": "팀명",
+      "scores": [4, 3, 5, 4, 4, 3, 4, 4, 5, 4, 3, 4, 5, 4, 3, 4, 4, 5],
       "players": [
         {
-          "name": "플레이어명",
-          "scores": [4, 3, 5, 4, 4, 3, 4, 4, 5, 4, 3, 4, 5, 4, 3, 4, 4, 5]
+          "name": "플레이어명"
         }
       ]
     }

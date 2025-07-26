@@ -236,7 +236,7 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
       data.teams.forEach((teamData, teamIndex) => {
         const teamId = `team-${order}-${teamIndex + 1}`;
         const teamName = `${order}-${teamData.teamName}`;
-        
+
         // 팀의 플레이어들 생성
         const teamPlayers: Player[] = teamData.players.map((playerData, playerIndex) => ({
           id: `player-${order}-${teamIndex + 1}-${playerIndex + 1}`,
@@ -250,31 +250,25 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
         };
         teams.push(team);
 
-        // 각 플레이어의 스코어카드 생성
-        teamData.players.forEach((playerData, playerIndex) => {
-          const playerId = `player-${order}-${teamIndex + 1}-${playerIndex + 1}`;
-          
-          // HoleScore 배열 생성 (첫 번째 사진의 파 정보 사용)
-          const holes: HoleScore[] = playerData.scores.map((score: number, holeIndex: number) => {
-            const par = pars[holeIndex] || 4;
-            return {
-              hole: holeIndex + 1,
-              par,
-              score,
-              displayType: getScoreType(score, par)
-            };
-          });
-          
-          // Scorecard 생성
-          const scorecard: Scorecard = {
-            id: `scorecard-${playerId}`,
-            teamId: teamId,
-            roundDate: new Date().toISOString().split('T')[0],
-            holes: holes
+        // 팀별 스코어카드 생성 (팀의 scores 사용)
+        const holes: HoleScore[] = teamData.scores.map((score: number, holeIndex: number) => {
+          const par = pars[holeIndex] || 4;
+          return {
+            hole: holeIndex + 1,
+            par,
+            score,
+            displayType: getScoreType(score, par)
           };
-          
-          scorecards.push(scorecard);
         });
+
+        // Scorecard 생성 (팀별)
+        const scorecard: Scorecard = {
+          id: `scorecard-${teamId}`,
+          teamId: teamId,
+          roundDate: new Date().toISOString().split('T')[0],
+          holes: holes
+        };
+        scorecards.push(scorecard);
       });
     });
 

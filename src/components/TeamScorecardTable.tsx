@@ -119,6 +119,7 @@ const TeamScorecardTable: React.FC<TeamScorecardTableProps> = ({ teams, scorecar
                   <td className="team-name-cell sticky-col" rowSpan={2}>
                     <div className="team-name-handicap">
                       <div className="team-name">{team.name}</div>
+                      <div className="team-handicap">핸디:</div>
                       <input
                         type="number"
                         className="team-handicap-input custom-handicap-input"

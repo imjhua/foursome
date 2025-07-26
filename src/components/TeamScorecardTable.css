@@ -281,8 +281,12 @@
   font-size: 1.1rem;
   font-weight: 700;
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 14px;
 }
+
+.team-handicap {
+  text-align: left;
+};
 
 .player-name-cell,
 .players-cell {

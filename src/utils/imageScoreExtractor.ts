@@ -202,7 +202,7 @@ export const extractScoresFromImage = async (file: File): Promise<ExtractedScore
       holes: 18,
       pars: [4, 3, 4, 5, 4, 3, 4, 4, 5, 4, 3, 4, 5, 4, 3, 4, 4, 5],
       success: false,
-      error: error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다'
+      error: '알 수 없는 오류가 발생했습니다'
     };
 
     return errorResult;

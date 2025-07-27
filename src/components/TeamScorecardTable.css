@@ -524,3 +524,31 @@
 .stats-empty-cell {
   background: transparent;
 }
+
+
+/* 모바일에서 팀 성과 영역 작게 표현 */
+@media (max-width: 768px) {
+  .scorecard-table td {
+    padding: 6px 0;
+  }
+
+  .team-performance-stats {
+    gap: 8px;
+  }
+  .stat-item {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+    border-radius: 14px;
+  }
+  .stat-icon {
+    font-size: 0.8rem;
+  }
+  .stat-label {
+    font-size: 0.7rem;
+  }
+  .stat-count {
+    font-size: 0.8rem;
+    min-width: 16px;
+    padding: 1px 4px;
+  }
+}

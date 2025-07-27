@@ -223,10 +223,10 @@
 }
 
 .image-header {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .image-number {
@@ -234,6 +234,7 @@
   color: #495057;
   font-size: 0.9em;
 }
+
 
 .image-actions button {
   font-size: 1rem;
@@ -341,13 +342,6 @@
   margin-right: 4px;
 }
 
-.images-grid {
-  gap: 12px;
-}
-.image-header {
-  margin-bottom: 6px;
-  flex-wrap: wrap;
-}
 /* 이미지 확대 모달 반응형 */
 .image-modal-overlay {
   position: fixed;

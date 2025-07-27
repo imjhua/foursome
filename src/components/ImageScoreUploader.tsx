@@ -105,8 +105,8 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
             )
           );
 
-        } catch (error) {
-          const errorMessage = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.';
+        } catch {
+          const errorMessage = '오류가 발생했습니다.';
           setUploadedImages(prev => 
             prev.map(img => 
               img.id === imageId 
@@ -194,9 +194,9 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
             )
           );
 
-        } catch (error) {
+        } catch {
           // 실패한 경우 에러 업데이트
-          const errorMessage = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.';
+          const errorMessage = '오류가 발생했습니다.';
           setUploadedImages(prev => 
             prev.map(img => 
               img.id === imageId 

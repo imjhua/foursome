@@ -26,23 +26,7 @@ const WinnerSection: React.FC<WinnerSectionProps> = ({ winnerInfos, teams, show,
     <div className="winner-section">
       {!show && (
         <button
-          className="winner-btn-glow"
-          style={{
-            background: 'linear-gradient(90deg, #faad14 0%, #ffd666 100%)',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '12px',
-            padding: '16px 48px',
-            fontSize: '1.35rem',
-            fontWeight: 800,
-            cursor: disabled ? 'not-allowed' : 'pointer',
-            marginBottom: '1.5rem',
-            letterSpacing: '1px',
-            transition: 'background 0.2s',
-            position: 'relative',
-            zIndex: 2,
-            opacity: disabled ? 0.6 : 1,
-          }}
+          className="winner-btn-glow winner-btn-glow-main"
           onClick={onShow}
           disabled={disabled}
         >
@@ -54,8 +38,7 @@ const WinnerSection: React.FC<WinnerSectionProps> = ({ winnerInfos, teams, show,
           <div className="winner-trophy">
             🏆 {winnerInfos.length > 1 ? '공동우승팀' : '우승팀'}
           </div>
-          <span>(동타인 경우, 핸디캡이 높은 쪽이 우승)</span>
-          <br />
+          <span className='winner-info-note'>(동타인 경우, 핸디캡이 높은 쪽이 우승)</span>
           {winnerInfos.map((info) => {
             const winnerTeam = teams.find(t => t.id === info.teamId);
             return (
@@ -64,7 +47,6 @@ const WinnerSection: React.FC<WinnerSectionProps> = ({ winnerInfos, teams, show,
                 <div className="winner-total">총타수: {info.total} (핸디: {info.handicap})</div>
                 {winnerTeam && winnerTeam.players && winnerTeam.players.length > 0 && (
                   <div className="winner-players">
-                    <span className="winner-players-title">플레이어</span>
                     <ul className="winner-players-list">
                       {winnerTeam.players.map((p, idx) => (
                         <li key={p.id || idx} className="winner-player-item">{p.name}</li>
@@ -77,9 +59,6 @@ const WinnerSection: React.FC<WinnerSectionProps> = ({ winnerInfos, teams, show,
           })}
         </div>
       )}
-      {/* 반짝이는 효과용 배경 장식 */}
-      <div className="winner-bg-left" />
-      <div className="winner-bg-right" />
     </div>
   );
 };

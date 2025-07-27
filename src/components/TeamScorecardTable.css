@@ -1,11 +1,16 @@
-.custom-handicap-input {
-  width: 60px;
-  font-size: 1rem;
+.team-handicap-input {
+  font-size: 0.8rem;
   border-radius: 8px;
-  font-weight: 700;
-
+  width: 100px;
 }
-.custom-handicap-input:focus {
+
+@media (max-width: 768px) {
+  .team-handicap-input {
+    width: 60px;
+  }
+}
+
+.team-handicap-input:focus {
   border-color: #4caf50;
   box-shadow: 0 0 0 2px #c3f7d6;
   outline: none;
@@ -73,50 +78,54 @@
   text-align: center;
 }
 .score-legend-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: #f6f8fa;
-  padding: 18px 0 12px 0;
-  border-radius: 0 0 12px 12px;
+  padding: 18px;
   margin-bottom: 12px;
-}
-.score-legend-row .legend-score {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  font-size: .8rem;
-  width: 26px;
-  height: 26px;
-  background: #fff;
-  margin-right: 0;
-  font-weight: bold;
+  text-align: center;
 }
 .score-legend-row .legend-label {
   color: #333;
   margin-left: 6px;
   margin-right: 12px;
 }
+.score-legend-row .legend-score {
+  border: 2px solid #000;
+  border-radius: 100px;
+  width: 32px;
+  height: 32px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+@media (max-width: 768px) {
+  .score-legend-row .legend-label {
+    font-size: 0.8em;
+  }
+  .score-legend-row .legend-score {
+    font-size: 1em;
+    width: 28px;
+    height: 28px;
+  }
+}
 .score-legend-row .legend-score.eagle {
-  border: 2px solid #4caf50;
+  border-color: #4caf50;
   color: #4caf50;
 }
 .score-legend-row .legend-score.birdie {
-  border: 2px solid #ffc107;
+  border-color: #ffc107;
   color: #ffc107;
 }
 .score-legend-row .legend-score.par {
-  border: 2px solid #6c757d;
+  border-color: #6c757d;
   color: #6c757d;
-  border-radius: 2px;
 }
 .score-legend-row .legend-score.bogey {
-  border: 2px solid #0d1977;
+  border-color: #0d1977;
   color: #0d1977;
 }
 .score-legend-row .legend-score.doublepar {
-  border: 2px solid #dc3545;
+  border-color: #dc3545;
   color: #dc3545;
 }
 .table-container {
@@ -126,7 +135,6 @@
   overflow-x: scroll;
 }
 .team-scorecard-table {
-  margin: 2rem 0;
   background: white;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -178,14 +186,10 @@
 }
 
 .team-header {
-  width: 80px;
-  min-width: 80px;
   background: linear-gradient(135deg, #28a745, #20c997);
 }
 
 .player-header {
-  width: 100px;
-  min-width: 100px;
   background: linear-gradient(135deg, #28a745, #20c997);
 }
 
@@ -276,12 +280,10 @@
   vertical-align: middle;
 }
 
-.team-name {
+.team-scorecard-table .team-name {
   color: #495057;
-  font-size: 1.1rem;
   font-weight: 700;
   display: block;
-  margin-bottom: 14px;
 }
 
 .team-handicap {
@@ -298,19 +300,24 @@
   padding: 8px 10px;
 }
 
-.player-names {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  align-items: center;
-}
-
-.player-name {
+.team-scorecard-table .player-name {
   font-size: 0.85rem;
   color: #495057;
   padding: 1px 4px;
   border-radius: 3px;
+  margin-bottom: 6px;
   background: rgba(255, 255, 255, 0.5);
+
+  width: 120px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .team-scorecard-table .player-name {
+    width: 100px;
+  }
 }
 
 /* 스코어 셀 */
@@ -516,49 +523,4 @@
 
 .stats-empty-cell {
   background: transparent;
-}
-
-/* 반응형 팀 성과 */
-@media (max-width: 1200px) {
-  .team-performance-stats {
-    gap: 16px;
-  }
-  
-  .stat-item {
-    padding: 4px 8px;
-    font-size: 0.8rem;
-  }
-  
-  .stat-icon {
-    font-size: 1rem;
-  }
-  
-  .stat-label {
-    font-size: 0.75rem;
-  }
-  
-  .stat-count {
-    font-size: 0.9rem;
-    padding: 1px 4px;
-  }
-}
-
-@media (max-width: 768px) {
-  .stats-content-cell {
-    padding: 8px 12px;
-  }
-  
-  .team-performance-stats {
-    gap: 12px;
-    justify-content: center;
-  }
-  
-  .stat-item {
-    padding: 3px 6px;
-    font-size: 0.75rem;
-  }
-  
-  .team-stats-label {
-    font-size: 0.8rem;
-  }
 }

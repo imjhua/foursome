@@ -1,12 +1,15 @@
-import React from 'react';
-import type { TeamAwardStats } from '../types/golf';
+
+import React, { useState } from 'react';
+import type { TeamAwardStats, Team } from '../types/golf';
 import './AwardResults.css';
 
 interface AwardResultsProps {
   awards: TeamAwardStats;
+  teams: Team[];
 }
 
-const AwardResults: React.FC<AwardResultsProps> = ({ awards }) => {
+const AwardResults: React.FC<AwardResultsProps> = ({ awards, teams }) => {
+  const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
   // 모든 어워드를 통합하여 순위별로 정리 (그룹 정렬 적용)
   const createRankingData = () => {
     const rankings: { [rank: number]: { 
@@ -84,8 +87,18 @@ const AwardResults: React.FC<AwardResultsProps> = ({ awards }) => {
     return (
       <div className="winners-list">
         {uniqueTeams.map((winner, idx) => (
-          <div key={`${winner.teamName}-${idx}`} className="winner-item">
+          <div key={`${winner.teamName}-${idx}`} className="winner-item" onClick={() => {
+            const team = teams.find(t => t.name === winner.teamName);
+            if (team) setSelectedTeam(team);
+          }} style={{ cursor: 'pointer' }}>
             <span className="team-name">{winner.teamName}</span>
+            {/* 팀의 플레이어 이름 표시 */}
+            <ul className="team-players">
+              {(() => {
+                const team = teams.find(t => t.name === winner.teamName);
+                return team ? team.players.map(p => <li key={p.id}>{p.name}</li>) : null;
+              })()}
+            </ul>
             <span className="count-badge">{winner.count}개</span>
           </div>
         ))}
@@ -94,12 +107,11 @@ const AwardResults: React.FC<AwardResultsProps> = ({ awards }) => {
   };
 
   return (
-    <div className="results">
+    <div className="award-results">
       <div className="results-header">
         <h2>어워드 결과</h2>
         <p>팀별 순위표 (동점자는 같은 순위)</p>
       </div>
-      
       <div className="award-table-container">
         <table className="award-table">
           <thead>
@@ -166,6 +178,32 @@ const AwardResults: React.FC<AwardResultsProps> = ({ awards }) => {
           </tbody>
         </table>
       </div>
+      {/* 팀 오버레이: 선택된 팀의 플레이어 정보 */}
+      {selectedTeam && (
+        <div
+          className="team-overlay team-overlay-modal"
+          onClick={() => setSelectedTeam(null)}
+        >
+          <div
+            className="team-overlay-content team-overlay-modal-content"
+            onClick={e => e.stopPropagation()}
+          >
+            <button
+              className="team-overlay-modal-close"
+              onClick={() => setSelectedTeam(null)}
+              aria-label="닫기"
+            >
+              &times;
+            </button>
+            <h3>{selectedTeam.name}</h3>
+            <ul className="team-overlay-player-list">
+              {selectedTeam.players.map(p => (
+                <li className="team-overlay-player-item" key={p.id}>{p.name}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

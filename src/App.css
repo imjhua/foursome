@@ -14,14 +14,22 @@
 .app {
   min-height: 100vh;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .app {
+    padding: 0;
+  }
 }
 
 .app-header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: 40px 20px;
+  padding: 20px;
   text-align: center;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
 }
 
 .app-header h1 {
@@ -58,30 +66,6 @@
   transform: translateY(-2px);
 }
 
-.app-main {
-  max-width: 1600px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.scorecards-section {
-  margin: 30px 0;
-}
-
-.scorecards-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.app-footer {
-  background: #333;
-  color: white;
-  text-align: center;
-  padding: 20px;
-  margin-top: 40px;
-}
-
 .app-footer p {
   margin: 0;
   opacity: 0.8;
@@ -112,39 +96,6 @@
   font-weight: 500;
 }
 
-/* 반응형 디자인 */
-@media (max-width: 768px) {
-  .app-header {
-    padding: 30px 15px;
-  }
-  
-  .app-header h1 {
-    font-size: 2em;
-  }
-  
-  .app-header p {
-    font-size: 1em;
-  }
-  
-  .app-main {
-    padding: 15px;
-  }
-
-  .guide-card {
-    padding: 20px;
-    margin: 0 10px;
-  }
-
-  .guide-card p {
-    font-size: 1em;
-  }
-}
-
-@media (max-width: 480px) {
-  .app-header h1 {
-    font-size: 1.6em;
-  }
-}
 
 .results {
   margin: 30px 0;
@@ -157,8 +108,9 @@
 }
 
 .results-header {
+  margin-top: 30px;
+  margin-bottom: 10px;
   text-align: center;
-  margin-bottom: 30px;
 }
 
 .results-header h2 {
@@ -167,6 +119,13 @@
   font-weight: 700;
   color: #2c3e50;
 }
+
+@media (max-width: 768px) {
+  .results-header h2 {
+    font-size: 1.5em;
+  }
+}
+
 
 .results-header p {
   margin: 0;

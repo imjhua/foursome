@@ -1,3 +1,103 @@
+/* 팀 오버레이 전체 배경 */
+.team-overlay-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.18);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 오버레이 내용 박스 */
+.team-overlay-modal-content {
+  position: relative;
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 2px 24px rgba(0,0,0,0.13);
+  padding: 2.5rem 2rem 2rem 2rem;
+  min-width: 280px;
+  min-height: 120px;
+  max-width: 90vw;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* X 닫기 버튼 */
+.team-overlay-modal-close {
+  position: absolute;
+  top: 06px;
+  right: 06px;
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  border: 2px solid #eee;
+  border-radius: 50%;
+  font-size: 2rem;
+  color: #222;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.team-overlay-player-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.2em 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  align-items: center;
+}
+.team-overlay-player-item {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 0.5em 1.2em;
+  font-weight: 600;
+  color: #495057;
+  box-shadow: 0 1px 4px #dee2e6;
+  font-size: 1em;
+}
+/* 팀 선택 시 플레이어 정보 오버레이 */
+.team-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.35);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;
+}
+.team-overlay-content {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px 32px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  min-width: 240px;
+  text-align: center;
+}
+.awards-section{
+  padding-bottom: 20px;
+}
+
+/* 어워드 테이블 헤더 구분 */
+.award-table th {
+  background: linear-gradient(135deg, #e9ecef 60%, #f8f9fa 100%);
+  color: #343a40;
+  font-weight: 700;
+  border-bottom: 2px solid #dee2e6;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  text-align: center;
+  font-size: 1.05em;
+  letter-spacing: 0.5px;
+}
 /* 테이블 컨테이너 */
 .award-table-container {
   background: #ffffff;
@@ -13,116 +113,30 @@
   border-collapse: collapse;
   table-layout: fixed;
 }
-
-/* 헤더 */
-.award-table thead {
-  background: #f8f9fa;
-  border-bottom: 2px solid #dee2e6;
+.rank-column{
+  height: 40px;
+  width: 80px;
+}
+@media (max-width: 768px) {
+  .rank-column {
+    width: 48px;
+  }
 }
 
-.award-table th {
-  padding: 16px 12px;
-  text-align: center;
-  font-weight: 600;
-  font-size: 1em;
-  vertical-align: middle;
-  color: #495057;
-}
-
-.rank-column {
-  width: 100px;
-  background: #f1f3f4;
-}
-
-.award-column {
-  width: calc((100% - 100px) / 4);
-}
-
-.birdie-column {
-  background: rgba(255, 193, 7, 0.1);
-}
-
-.par-column {
-  background: rgba(108, 117, 125, 0.1);
-}
-
-.bogey-column {
-  background: rgba(0, 123, 255, 0.1);
-}
-
-.doublepar-column {
-  background: rgba(220, 53, 69, 0.1);
-}
-
-/* 헤더 콘텐츠 */
-.award-header-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.award-name {
-  font-size: 0.95em;
-  font-weight: 600;
-  color: #495057;
-}
-
-/* 테이블 행 */
 .award-row {
   border-bottom: 1px solid #dee2e6;
 }
 
-.award-row:hover {
-  background: transparent;
-}
-
-.award-row:last-child {
-  border-bottom: none;
-}
-
-/* 순위별 행 색상 제거 - 컬럼 색상과 충돌 방지 */
-.award-row.rank-first {
-  background: transparent;
-}
-
-.award-row.rank-second {
-  background: transparent;
-}
-
-.award-row.rank-third {
-  background: transparent;
-}
-
-/* 셀 */
-.award-table td {
-  padding: 8px 12px;
-  vertical-align: middle;
-  border-right: 1px solid #dee2e6;
-  height: 50px;
-}
-
-.award-table td:last-child {
-  border-right: none;
-}
-
-/* 순위 셀 */
 .rank-cell {
   text-align: center;
-  background: #f8f9fa;
-  vertical-align: middle;
 }
 
 .rank-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
   background: #ffffff;
   border: 2px solid #dee2e6;
   border-radius: 8px;
   padding: 4px 8px;
-  min-width: 40px;
-  justify-content: center;
+  margin: 0 2px;
 }
 
 .rank-first .rank-badge {
@@ -185,13 +199,7 @@
 }
 
 /* 순위 셀 */
-.rank-cell {
-  background: #f8f9fa;
-  font-weight: 600;
-  text-align: center;
-  vertical-align: middle;
-  width: 80px;
-}
+/* 중복 선언 제거: 위에서 이미 선언됨 */
 
 /* 우승자 목록 */
 .winners-list {
@@ -204,17 +212,28 @@
   background: #ffffff;
   border-radius: 6px;
   padding: 10px 12px;
-  display: flex;
+  /* display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: center; */
   border: 1px solid #e9ecef;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  text-align: center;
 }
 
-.team-name {
-  font-weight: 600;
+.award-results .team-name {
   font-size: 0.95em;
   color: #495057;
+  margin-right: 4px;
+}
+
+@media (max-width: 768px) {
+  .winner-item {
+    padding: 4px 0;
+  }
+  .award-results .team-name {
+    display: block;
+    margin-right: 0;
+  }
 }
 
 .count-badge {
@@ -227,6 +246,23 @@
   text-align: center;
   color: #495057;
   border: 1px solid #dee2e6;
+}
+
+.award-results .team-players {
+  padding: 0;
+  margin: 10px;
+
+  li {
+    list-style: none;
+    background-color: #f1f3f5;
+    margin-top:2px;
+  }
+}
+
+@media (max-width: 768px) {
+  .award-results .team-players {
+    display: none;
+  }
 }
 
 /* 데이터 없음 */
@@ -245,104 +281,4 @@
   color: #6c757d;
   font-style: italic;
   font-size: 1.1em;
-}
-
-/* 반응형 디자인 */
-@media (max-width: 1024px) {
-  .award-results {
-    padding: 25px 20px;
-  }
-  
-  .award-table th,
-  .award-table td {
-    padding: 16px 12px;
-  }
-  
-  .rank-badge {
-    width: 50px;
-    height: 50px;
-  }
-  
-  .rank-number {
-    font-size: 1.2em;
-  }
-  
-  .winner-item {
-    padding: 10px 12px;
-  }
-}
-
-@media (max-width: 768px) {
-  .award-results {
-    padding: 20px 15px;
-    margin: 20px 0;
-  }
-  
-  .award-results-header h2 {
-    font-size: 1.8em;
-  }
-  
-  .award-table-container {
-    overflow-x: auto;
-  }
-  
-  .award-table {
-    min-width: 800px;
-  }
-  
-  .award-table th,
-  .award-table td {
-    padding: 12px 8px;
-  }
-  
-  .award-emoji {
-    font-size: 1.5em;
-  }
-  
-  .award-name {
-    font-size: 0.9em;
-  }
-  
-  .rank-badge {
-    width: 45px;
-    height: 45px;
-  }
-  
-  .rank-number {
-    font-size: 1.1em;
-  }
-  
-  .rank-suffix {
-    font-size: 0.7em;
-  }
-}
-
-@media (max-width: 480px) {
-  .award-results {
-    padding: 15px 10px;
-  }
-  
-  .award-results-header h2 {
-    font-size: 1.6em;
-  }
-  
-  .award-table {
-    min-width: 700px;
-    font-size: 0.9em;
-  }
-  
-  .award-table th,
-  .award-table td {
-    padding: 10px 6px;
-  }
-  
-  .winner-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-  }
-  
-  .count-badge {
-    align-self: flex-end;
-  }
 }

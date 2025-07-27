@@ -1,14 +1,34 @@
-.winner-section {
-  margin: 2.5rem auto 0 auto;
-  text-align: center;
-  padding: 2.5rem 0 2.5rem 0;
-  background: linear-gradient(135deg, #ffe58f 0%, #ffd666 100%);
-  border-radius: 18px;
-  box-shadow: 0 6px 32px rgba(255,193,7,0.18);
-  max-width: 600px;
+/* 정보성 안내 문구 스타일 */
+.winner-info-note {
+  font-size: 0.95rem;
+  color: #888;
+  font-style: italic;
+  display: block;
+}
+/* 우승팀 확인 버튼 메인 스타일 */
+.winner-btn-glow-main {
+  background: linear-gradient(90deg, #faad14 0%, #ffd666 100%);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 16px 48px;
+  font-size: 1.35rem;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: background 0.2s;
   position: relative;
-  overflow: hidden;
-  animation: winner-area-fadein 1s;
+  z-index: 2;
+  opacity: 1;
+}
+
+.winner-btn-glow-main:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.winner-section {
+  text-align: center;
+  margin-top: 20px;
 }
 
 @keyframes winner-area-fadein {
@@ -20,37 +40,33 @@
   box-shadow: 0 0 24px 6px #ffd66688, 0 2px 8px #faad14;
   animation: winner-btn-glow 1.5s infinite alternate;
 }
+/* winner-bg-left, winner-bg-right, winner-section, winner-btn-glow, winner-team-info, winner-trophy, winner-team-block, winner-team-name, winner-total, winner-players, winner-players-title, winner-players-list, winner-player-item 등은 TSX에서 모두 사용됨. 불필요한 스타일 없음. */
 @keyframes winner-btn-glow {
   from { box-shadow: 0 0 12px 2px #ffd66688, 0 2px 8px #faad14; }
-  to { box-shadow: 0 0 32px 12px #ffd666cc, 0 2px 16px #faad14; }
+  to { box-shadow: 0 0 22px 12px #ffd666cc, 0 2px 16px #faad14; }
 }
 
 .winner-team-info {
   background: linear-gradient(135deg, #fffbe6 0%, #fff1b8 100%);
   border: 2px solid #ffe58f;
   border-radius: 14px;
-  padding: 1.5rem;
-  margin: 1.5rem auto 0 auto;
-  max-width: 420px;
   text-align: center;
   font-size: 1.18rem;
   box-shadow: 0 2px 16px rgba(255,193,7,0.12);
-  /* position: relative;
-  z-index: 1; */
 }
 
 .winner-trophy {
   font-weight: 700;
   color: #d48806;
-  font-size: 2.5rem;
+  font-size: 2rem;
   display: block;
 }
 
 .winner-team-block{
-  margin-top: 1.2rem;
+  margin-top: 10px;
 }
 .winner-team-name {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   color: #d28a1e;
   font-weight: 900;
 }
@@ -61,53 +77,20 @@
 }
 
 .winner-players {
-  margin-top: 1.2rem;
-  background: #fffbe6;
-  border-radius: 10px;
-  padding: 0.8rem;
-  box-shadow: 0 1px 8px #ffe58f44;
-}
-.winner-players-title {
-  font-weight: 800;
-  color: #faad14;
-  font-size: 1.08rem;
+  margin-top: 2px;
 }
 .winner-players-list {
   list-style: none;
-  padding: 0;
-  margin: 0.5rem 0 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  align-items: center;
+  padding: 2px;
+  margin: 0;
 }
 .winner-player-item {
   background: #fff;
   border-radius: 6px;
-  padding: 0.4rem 1.2rem;
   font-weight: 600;
   color: #d48806;
   box-shadow: 0 1px 4px #ffd66622;
   font-size: 1rem;
-}
-
-.winner-bg-left {
-  position: absolute;
-  left: -60px;
-  top: -60px;
-  width: 120px;
-  height: 120px;
-  background: radial-gradient(circle, #ffd66688 0%, #fffbe6 80%);
-  filter: blur(8px);
-  z-index: 0;
-}
-.winner-bg-right {
-  position: absolute;
-  right: -40px;
-  bottom: -40px;
-  width: 80px;
-  height: 80px;
-  background: radial-gradient(circle, #faad14cc 0%, #fffbe6 80%);
-  filter: blur(10px);
-  z-index: 0;
+  margin: 4px;
+  padding: 10px 12px;
 }

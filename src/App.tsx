@@ -81,7 +81,6 @@ function App() {
     <div className="app">
       <header className="app-header">
         <h1>🏌️‍♂️ 포썸 어워드</h1>
-        <p>팀별 스코어카드와 어워드 현황을 확인해보세요</p>
       </header>
 
       <main className="app-main">
@@ -155,12 +154,12 @@ function App() {
                 <div className="upload-guide-message">
                   <div className="guide-card">
                     <h2>어워드 결과</h2>
-                    <p>스코어 생성 후 어워드 결과를 확인하실 수 있습니다.</p>
+                    <p>스코어 생성 후 어워드 결과를 확인하세요.</p>
                   </div>
                 </div>
               ) : (
                 <>
-                  <AwardResults awards={awards} />
+                  <AwardResults awards={awards} teams={teams}/>
                   {isConnected === true && awards && (
                     Object.values(awards).some(arr => Array.isArray(arr) && arr.length > 0) && (
                       <WinnerSection

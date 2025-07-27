@@ -12,7 +12,7 @@ interface TeamScorecardTableProps {
 
 const TeamScorecardTable: React.FC<TeamScorecardTableProps> = ({ teams, scorecards, teamHandicaps, onHandicapChange }) => {
   const teamTotals = calculateTeamTotals(scorecards, teams);
-  
+
   // 실제 파 정보를 스코어카드에서 추출
   const getParsFromScorecards = (): number[] => {
     if (scorecards.length > 0) {
@@ -27,7 +27,7 @@ const TeamScorecardTable: React.FC<TeamScorecardTableProps> = ({ teams, scorecar
   };
 
   const actualPars = getParsFromScorecards();
-  
+
   // 팀명의 그룹 번호를 추출하는 함수
   const getGroupNumber = (teamName: string): number => {
     const match = teamName.match(/^(\d+)-/);
@@ -38,178 +38,175 @@ const TeamScorecardTable: React.FC<TeamScorecardTableProps> = ({ teams, scorecar
   const sortedTeams = [...teams].sort((a, b) => {
     return getGroupNumber(a.name) - getGroupNumber(b.name);
   });
-  
-  return (
 
-    <div className="results">
+  return (
+    <>
       <div className="results-header">
         <h2>팀별 통합 스코어카드</h2>
         <p>팀별 순위표 (동점자는 같은 순위)</p>
       </div>
-      
-    <div className="team-scorecard-table">
-      {/* 한 줄 범례: pill + 설명 나란히 */}
-      <div className="score-legend-row">
-        <span className="legend-score eagle">-2</span>
-        <span className="legend-label">이글 (2타 적게)</span>
-        <span className="legend-score birdie">-1</span>
-        <span className="legend-label">버디 (1타 적게)</span>
-        <span className="legend-score par">0</span>
-        <span className="legend-label">파 (기준 타수)</span>
-        <span className="legend-score bogey">+1</span>
-        <span className="legend-label">보기 (1타 많게)</span>
-        <span className="legend-score doublepar">x2</span>
-        <span className="legend-label">양파 (기준 타수 x2)</span>
-      </div>
-      
-      <div className="table-container">
-        <table className="scorecard-table">
-          <thead>
-            <tr>
-              <th className="team-header sticky-col">팀/핸디</th>
-              <th className="player-header sticky-col">플레이어</th>
-              {Array.from({ length: 18 }, (_, i) => i + 1).map(hole => (
-                <th key={hole} className={`hole-header ${hole === 9 ? 'front-nine-last' : hole === 18 ? 'back-nine-last' : ''}`}> 
-                  <div className="hole-info">
-                    <div className="hole-number">{hole}</div>
-                    <div className="par-number">Par {actualPars[hole - 1]}</div>
-                  </div>
-                </th>
-              ))}
-              <th className="total-header">전반</th>
-              <th className="total-header">후반</th>
-              <th className="final-total-header">합계</th>
-              <th className="handicap-total-header">핸디 적용 합계</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sortedTeams.map(team => {
-              const teamScorecards = scorecards.filter(sc => sc.teamId === team.id);
-              
-              // 포썸: 2명이 한 팀이지만, 각 홀마다 하나의 스코어만 기록
-              const player1 = team.players[0];
-              const player2 = team.players[1];
-              
-              // 팀 전체의 홀별 스코어 수집 (포썸에서는 홀별로 하나의 스코어)
-              const teamHoleScores = Array.from({ length: 18 }, (_, i) => {
-                const hole = i + 1;
-                // 해당 홀에서 기록된 스코어를 찾음 (어느 플레이어든)
-                for (const scorecard of teamScorecards) {
-                  const holeScore = scorecard.holes.find(h => h.hole === hole);
-                  if (holeScore) {
-                    return holeScore;
-                  }
-                }
-                return null;
-              });
 
-              const frontNine = teamHoleScores.slice(0, 9).reduce((sum, score) => sum + (score?.score || 0), 0);
-              const backNine = teamHoleScores.slice(9, 18).reduce((sum, score) => sum + (score?.score || 0), 0);
-              const total = frontNine + backNine;
-              
-              const frontNinePar = actualPars.slice(0, 9).reduce((sum, par) => sum + par, 0);
-              const backNinePar = actualPars.slice(9, 18).reduce((sum, par) => sum + par, 0);
-              const totalPar = frontNinePar + backNinePar;
+        <div className="team-scorecard-table">
+          {/* 한 줄 범례: pill + 설명 나란히 */}
+          <div className="score-legend-row">
+            <span className="legend-score eagle">-2</span>
+            <span className="legend-label">이글 (2타 적게)</span>
+            <span className="legend-score birdie">-1</span>
+            <span className="legend-label">버디 (1타 적게)</span>
+            <span className="legend-score par">0</span>
+            <span className="legend-label">파 (기준 타수)</span>
+            <span className="legend-score bogey">+1</span>
+            <span className="legend-label">보기 (1타 많게)</span>
+            <span className="legend-score doublepar">x2</span>
+            <span className="legend-label">양파 (기준 타수 x2)</span>
+          </div>
 
-              const teamRows = [];
-              
-              // 팀 스코어 행 (포썸에서는 하나의 행으로 충분)
-              teamRows.push(
-                <tr key={`${team.id}-scores`} className="team-score-row">
-                  <td className="team-name-cell sticky-col" rowSpan={2}>
-                    <div className="team-name-handicap">
-                      <div className="team-name">{team.name}</div>
-                      <div className="team-handicap">핸디:</div>
-                      <input
-                        type="number"
-                        className="team-handicap-input custom-handicap-input"
-                        value={teamHandicaps[team.id] ?? 0}
-                        min={0}
-                        onChange={e => onHandicapChange(team.id, Number(e.target.value))}
-                      />
-                    </div>
-                  </td>
-                  <td className="players-cell sticky-col" rowSpan={2}>
-                    <div className="player-names">
-                      <div className="player-name">{player1?.name}</div>
-                      <div className="player-name">{player2?.name}</div>
-                    </div>
-                  </td>
-                  {teamHoleScores.map((holeScore, holeIndex) => (
-                    <td key={holeIndex + 1} className={`score-cell ${holeIndex === 8 ? 'front-nine-last' : holeIndex === 17 ? 'back-nine-last' : ''}`}> 
-                      {holeScore ? (
-                        <span className={`score ${getScoreType(holeScore.score, holeScore.par)}`}> 
-                          {holeScore.score}
-                        </span>
-                      ) : (
-                        <span className="no-score">-</span>
-                      )}
-                    </td>
-                  ))}
-                  <td className="subtotal-cell">
-                    <div className="subtotal-score highlight-score">{frontNine}</div>
-                    <div className="subtotal-par highlight-par">({frontNine - frontNinePar > 0 ? '+' : ''}{frontNine - frontNinePar})</div>
-                  </td>
-                  <td className="subtotal-cell">
-                    <div className="subtotal-score highlight-score">{backNine}</div>
-                    <div className="subtotal-par highlight-par">({backNine - backNinePar > 0 ? '+' : ''}{backNine - backNinePar})</div>
-                  </td>
-                  <td className="final-total-cell">
-                    <div className="final-total highlight-score">{total}</div>
-                    <div className="final-par highlight-par">({total - totalPar > 0 ? '+' : ''}{total - totalPar})</div>
-                  </td>
-                  {/* 핸디 적용 합계 */}
-                  <td className="handicap-total-cell">
-                    <div className="handicap-total highlight-score">{total - (teamHandicaps[team.id] ?? 0)}</div>
-                    <div className="handicap-par highlight-par">({total - totalPar - (teamHandicaps[team.id] ?? 0) > 0 ? '+' : ''}{total - totalPar - (teamHandicaps[team.id] ?? 0)})</div>
-                  </td>
-                </tr>
-              );
-
-              // 팀 성과 요약 행 추가
-              const teamStats = teamTotals[team.id];
-              if (teamStats) {
-                teamRows.push(
-                  <tr key={`${team.id}-stats`} className="team-stats-row sticky-stats-row">
-                    <td className="stats-label-cell sticky-col" colSpan={2}>
-                      <div className="team-stats-label">팀 성과</div>
-                    </td>
-                    <td className="stats-content-cell" colSpan={18}>
-                      <div className="team-performance-stats">
-                        <span className="stat-item eagle-stat">
-                          <span className="stat-label">이글</span>
-                          <span className="stat-count">{teamStats.eagle}</span>
-                        </span>
-                        <span className="stat-item birdie-stat">
-                          <span className="stat-label">버디</span>
-                          <span className="stat-count">{teamStats.birdie}</span>
-                        </span>
-                        <span className="stat-item par-stat">
-                          <span className="stat-label">파</span>
-                          <span className="stat-count">{teamStats.par}</span>
-                        </span>
-                        <span className="stat-item bogey-stat">
-                          <span className="stat-label">보기</span>
-                          <span className="stat-count">{teamStats.bogey}</span>
-                        </span>
-                        <span className="stat-item doublepar-stat">
-                          <span className="stat-label">양파</span>
-                          <span className="stat-count">{teamStats.doublepar}</span>
-                        </span>
+          <div className="table-container">
+            <table className="scorecard-table">
+              <thead>
+                <tr>
+                  <th className="team-header sticky-col">팀/핸디</th>
+                  {Array.from({ length: 18 }, (_, i) => i + 1).map(hole => (
+                    <th key={hole} className={`hole-header ${hole === 9 ? 'front-nine-last' : hole === 18 ? 'back-nine-last' : ''}`}>
+                      <div className="hole-info">
+                        <div className="hole-number">{hole}</div>
+                        <div className="par-number">Par {actualPars[hole - 1]}</div>
                       </div>
-                    </td>
-                    <td className="stats-empty-cell" colSpan={3}></td>
-                  </tr>
-                );
-              }
+                    </th>
+                  ))}
+                  <th className="total-header">전반</th>
+                  <th className="total-header">후반</th>
+                  <th className="final-total-header">합계</th>
+                  <th className="handicap-total-header">핸디 적용 합계</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sortedTeams.map(team => {
+                  const teamScorecards = scorecards.filter(sc => sc.teamId === team.id);
 
-              return teamRows;
-            })}
-          </tbody>
-        </table>
-      </div>
-    </div>
-    </div>
+                  // 포썸: 2명이 한 팀이지만, 각 홀마다 하나의 스코어만 기록
+                  const player1 = team.players[0];
+                  const player2 = team.players[1];
+
+                  // 팀 전체의 홀별 스코어 수집 (포썸에서는 홀별로 하나의 스코어)
+                  const teamHoleScores = Array.from({ length: 18 }, (_, i) => {
+                    const hole = i + 1;
+                    // 해당 홀에서 기록된 스코어를 찾음 (어느 플레이어든)
+                    for (const scorecard of teamScorecards) {
+                      const holeScore = scorecard.holes.find(h => h.hole === hole);
+                      if (holeScore) {
+                        return holeScore;
+                      }
+                    }
+                    return null;
+                  });
+
+                  const frontNine = teamHoleScores.slice(0, 9).reduce((sum, score) => sum + (score?.score || 0), 0);
+                  const backNine = teamHoleScores.slice(9, 18).reduce((sum, score) => sum + (score?.score || 0), 0);
+                  const total = frontNine + backNine;
+
+                  const frontNinePar = actualPars.slice(0, 9).reduce((sum, par) => sum + par, 0);
+                  const backNinePar = actualPars.slice(9, 18).reduce((sum, par) => sum + par, 0);
+                  const totalPar = frontNinePar + backNinePar;
+
+                  const teamRows = [];
+
+                  // 팀 스코어 행 (포썸에서는 하나의 행으로 충분)
+                  teamRows.push(
+                    <tr key={`${team.id}-scores`} className="team-score-row">
+                      <td className="team-name-cell sticky-col" rowSpan={2}>
+                        <div className="team-name-handicap-player">
+                          <div className="team-name">{team.name}</div>
+                          <div className="player-names">
+                            <div className="player-name">{player1?.name}</div>
+                            <div className="player-name">{player2?.name}</div>
+                          </div>
+                          <input
+                            type="number"
+                            name={`team-handicap-${team.id}`}
+                            className="team-handicap-input"
+                            value={teamHandicaps[team.id] === undefined ? '' : teamHandicaps[team.id]}
+                            min={0}
+                            onChange={e => onHandicapChange(team.id, Number(e.target.value))}
+                            placeholder='핸디캡 입력'
+                          />
+                          </div>
+                      </td>
+                      {teamHoleScores.map((holeScore, holeIndex) => (
+                        <td key={holeIndex + 1} className={`score-cell ${holeIndex === 8 ? 'front-nine-last' : holeIndex === 17 ? 'back-nine-last' : ''}`}>
+                          {holeScore ? (
+                            <span className={`score ${getScoreType(holeScore.score, holeScore.par)}`}>
+                              {holeScore.score}
+                            </span>
+                          ) : (
+                            <span className="no-score">-</span>
+                          )}
+                        </td>
+                      ))}
+                      <td className="subtotal-cell">
+                        <div className="subtotal-score highlight-score">{frontNine}</div>
+                        <div className="subtotal-par highlight-par">({frontNine - frontNinePar > 0 ? '+' : ''}{frontNine - frontNinePar})</div>
+                      </td>
+                      <td className="subtotal-cell">
+                        <div className="subtotal-score highlight-score">{backNine}</div>
+                        <div className="subtotal-par highlight-par">({backNine - backNinePar > 0 ? '+' : ''}{backNine - backNinePar})</div>
+                      </td>
+                      <td className="final-total-cell">
+                        <div className="final-total highlight-score">{total}</div>
+                        <div className="final-par highlight-par">({total - totalPar > 0 ? '+' : ''}{total - totalPar})</div>
+                      </td>
+                      {/* 핸디 적용 합계 */}
+                      <td className="handicap-total-cell">
+                        <div className="handicap-total highlight-score">{total - (teamHandicaps[team.id] ?? 0)}</div>
+                        <div className="handicap-par highlight-par">({total - totalPar - (teamHandicaps[team.id] ?? 0) > 0 ? '+' : ''}{total - totalPar - (teamHandicaps[team.id] ?? 0)})</div>
+                      </td>
+                    </tr>
+                  );
+
+                  // 팀 성과 요약 행 추가
+                  const teamStats = teamTotals[team.id];
+                  if (teamStats) {
+                    teamRows.push(
+                      <tr key={`${team.id}-stats`} className="team-stats-row sticky-stats-row">
+                        <td className="stats-label-cell sticky-col" colSpan={2}>
+                          <div className="team-stats-label">팀 성과</div>
+                        </td>
+                        <td className="stats-content-cell" colSpan={18}>
+                          <div className="team-performance-stats">
+                            <span className="stat-item eagle-stat">
+                              <span className="stat-label">이글</span>
+                              <span className="stat-count">{teamStats.eagle}</span>
+                            </span>
+                            <span className="stat-item birdie-stat">
+                              <span className="stat-label">버디</span>
+                              <span className="stat-count">{teamStats.birdie}</span>
+                            </span>
+                            <span className="stat-item par-stat">
+                              <span className="stat-label">파</span>
+                              <span className="stat-count">{teamStats.par}</span>
+                            </span>
+                            <span className="stat-item bogey-stat">
+                              <span className="stat-label">보기</span>
+                              <span className="stat-count">{teamStats.bogey}</span>
+                            </span>
+                            <span className="stat-item doublepar-stat">
+                              <span className="stat-label">양파</span>
+                              <span className="stat-count">{teamStats.doublepar}</span>
+                            </span>
+                          </div>
+                        </td>
+                        <td className="stats-empty-cell" colSpan={3}></td>
+                      </tr>
+                    );
+                  }
+
+                  return teamRows;
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+    </>
   );
 };
 

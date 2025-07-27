@@ -284,23 +284,26 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
     <div className="image-score-uploader">
       <div className="uploader-header">
         <div className="status-message-area">
-        <h3>
-          📸 스코어카드 이미지 업로드
-          {isConnected === null ? (
-            <span className="status-dot status-checking">●</span>
-          ) : isConnected ? (
-            <span className="status-dot status-connected">●</span>
-          ) : (
-            <span className="status-dot status-disconnected">●</span>
-          )}
-        </h3>
-        <div className="status-message-content">
-          {isConnected === null ? (
-            <p>서버 연결 상태를 확인 중입니다...</p>
-          ) : isConnected === true ? (
-            <p>골프 스코어카드 사진을 업로드해주세요. (동일한 사진 중복업로드 불가)</p>
-          ) : null}
-        </div>
+          <h3>
+            📸 스코어카드 이미지 업로드
+            {isConnected === null ? (
+              <span className="status-dot status-checking">●</span>
+            ) : isConnected ? (
+              <span className="status-dot status-connected">●</span>
+            ) : (
+              <span className="status-dot status-disconnected">●</span>
+            )}
+          </h3>
+          <div className="status-message-content">
+            {isConnected === null ? (
+              <p>서버 연결 상태를 확인 중입니다...</p>
+            ) : isConnected === true ? (
+            <p>
+              골프 스코어카드 사진을 업로드해주세요.
+              <span className="desktop-only"> (동일한 사진 중복업로드 불가)</span>
+            </p>
+            ) : null}
+          </div>
         </div>
       </div>
 
@@ -332,14 +335,14 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
           <div className="images-header">
             <h4>업로드된 이미지 ({uploadedImages.length}개)</h4>
           </div>
-          
+
           <div className="images-grid">
             {uploadedImages.map((image, index) => (
               <div key={image.id} className="image-card">
                 <div className="image-header">
                   <span className="image-number">이미지 {index + 1}</span>
                   <div className="image-actions">
-                    <button 
+                    <button
                       onClick={() => handleReplaceImage(image.id)}
                       className="replace-btn"
                       title="수정"
@@ -347,7 +350,7 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
                     >
                       수정
                     </button>
-                    <button 
+                    <button
                       onClick={() => handleDeleteImage(image.id)}
                       className="delete-btn"
                       title="삭제"
@@ -356,81 +359,17 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
                     </button>
                   </div>
                 </div>
-                
+
                 <div className="image-preview-container">
-                  <img 
-                    src={image.preview} 
+                  <img
+                    src={image.preview}
                     alt={`스코어카드 ${index + 1}`}
                     className="image-preview-small"
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: 'pointer', maxWidth: '100%', height: 'auto', borderRadius: '8px' }}
                     onClick={() => setSelectedImage(image)}
                   />
                 </div>
-      {/* 이미지 확대 모달 (별도 레이어, 알럿창 스타일) */}
-      {selectedImage && (
-        <div className="image-modal-overlay" style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          background: 'rgba(0,0,0,0.5)',
-          zIndex: 9999,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }} onClick={() => setSelectedImage(null)}>
-          <div className="image-modal-content" style={{
-            background: '#fff',
-            borderRadius: '16px',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.25)',
-            padding: '32px 32px 24px 32px',
-            position: 'relative',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            maxWidth: '100vw',
-            maxHeight: '100vh',
-          }} onClick={e => e.stopPropagation()}>
-            <button className="image-modal-close" style={{
-              position: 'absolute',
-              top: '-28px',
-              right: '-28px',
-              width: '48px',
-              height: '48px',
-              fontSize: '2.2rem',
-              background: 'rgba(255,255,255,0.95)',
-              border: '2px solid #888',
-              borderRadius: '50%',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
-              cursor: 'pointer',
-              color: '#222',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              zIndex: 10,
-              transition: 'background 0.2s',
-            }} onClick={() => setSelectedImage(null)}>
-              &times;
-            </button>
-            <img
-              src={selectedImage.preview}
-              alt="확대 이미지"
-              style={{
-                width: 'calc(52vw)',
-                maxWidth: '900px',
-                height: 'auto',
-                maxHeight: '80vh',
-                borderRadius: '12px',
-                boxShadow: '0 2px 16px rgba(0,0,0,0.12)',
-                objectFit: 'contain',
-                transition: 'all 0.2s',
-              }}
-            />
-          </div>
-        </div>
-      )}
-                
+
                 <div className="image-status">
                   {image.isProcessing ? (
                     <div className="processing">
@@ -467,13 +406,63 @@ const ImageScoreUploader: React.FC<ImageScoreUploaderProps> = ({
               </div>
             ))}
           </div>
-          <button 
+          <button
             onClick={handleGenerateTeams}
             className="generate-teams-btn"
             disabled={uploadedImages.some(img => img.isProcessing) || uploadedImages.every(img => img.error)}
           >
-            {teamCount === uploadedImages.length ? '팀 스코어카드 생성' : '팀 스코어카드 다시 생성'}
+            {teamCount === 0 || teamCount === uploadedImages.length ? '팀 스코어카드 생성' : '팀 스코어카드 다시 생성'}
           </button>
+        </div>
+      )}
+
+      {/* 이미지 확대 모달 (모바일 최적화) */}
+      {selectedImage && (
+        <div className="image-modal-overlay" style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          background: 'rgba(0,0,0,0.5)',
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflowY: 'auto',
+          padding: '2vw',
+        }} onClick={() => setSelectedImage(null)}>
+          <div className="image-modal-content" style={{
+            background: '#fff',
+            borderRadius: '16px',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.25)',
+            padding: '16px 8px 8px 8px',
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            maxWidth: '96vw',
+            maxHeight: '90vh',
+            overflowY: 'auto',
+          }} onClick={e => e.stopPropagation()}>
+            <button className="image-modal-close" onClick={() => setSelectedImage(null)}>
+              &times;
+            </button>
+            <img
+              src={selectedImage.preview}
+              alt="확대 이미지"
+              style={{
+                width: '100%',
+                maxWidth: '600px',
+                height: 'auto',
+                maxHeight: '70vh',
+                borderRadius: '12px',
+                boxShadow: '0 2px 16px rgba(0,0,0,0.12)',
+                objectFit: 'contain',
+                transition: 'all 0.2s',
+              }}
+            />
+          </div>
         </div>
       )}
     </div>

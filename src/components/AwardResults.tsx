@@ -38,7 +38,6 @@ const AwardResults: React.FC<AwardResultsProps> = ({ awards, teams }) => {
   };
 
   const rankings = createRankingData();
-  const maxRank = Math.max(...Object.keys(rankings).map(Number), 0);
 
   const getRankClass = (rank: number) => {
     if (rank === 1) return 'rank-first';

@@ -221,6 +221,7 @@
 }
 
 .award-results .team-name {
+  font-weight: bold;
   font-size: 0.95em;
   color: #495057;
   margin-right: 4px;
@@ -231,6 +232,7 @@
     padding: 4px 0;
   }
   .award-results .team-name {
+    font-weight: normal;
     display: block;
     margin-right: 0;
   }

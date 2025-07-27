@@ -117,33 +117,28 @@ export const calculateTeamAwards = (scorecards: Scorecard[], teams: Team[]): Tea
   const calculateRanks = (teams: TeamAward[]): TeamAward[] => {
     // 개수별로 내림차순 정렬
     teams.sort((a, b) => b.count - a.count);
-    
     if (teams.length === 0) return [];
-    
-    const rankedTeams: TeamAward[] = [];
-    let currentRank = 1;
-    let previousCount = teams[0].count;
-    
-    for (let i = 0; i < teams.length; i++) {
-      const team = teams[i];
-      
-      // 이전 팀과 점수가 다르면 순위 업데이트
-      if (team.count !== previousCount) {
-        currentRank = i + 1;
-        previousCount = team.count;
-      }
-      
-      // 3위까지만 포함
-      if (currentRank <= 3) {
-        rankedTeams.push({
-          ...team,
-          rank: currentRank
-        });
-      } else {
-        break;
+
+    // 상위 3개 점수 그룹 추출
+    const topCounts: number[] = [];
+    for (let i = 0; i < teams.length && topCounts.length < 3; i++) {
+      const count = teams[i].count;
+      if (!topCounts.includes(count)) {
+        topCounts.push(count);
       }
     }
-    
+
+    // 각 점수 그룹별로 팀을 모으고, rank는 1~3으로 부여
+    const rankedTeams: TeamAward[] = [];
+    for (let rank = 1; rank <= 3; rank++) {
+      const count = topCounts[rank - 1];
+      if (typeof count === 'number') {
+        const group = teams.filter(team => team.count === count);
+        group.forEach(team => {
+          rankedTeams.push({ ...team, rank });
+        });
+      }
+    }
     return rankedTeams;
   };
 

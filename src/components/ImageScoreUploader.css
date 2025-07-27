@@ -13,6 +13,7 @@
   margin: 0 auto;
   display: block;
   border: 1px solid #dee2e6;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
 }
 
 /* 데스크탑에서만 보이는 요소 */
@@ -209,17 +210,18 @@
 
 .images-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
   margin-bottom: 20px;
 }
 
 .image-card {
   background: white;
-  border-radius: 4px;
-  padding: 8px;
+  border-radius: 10px;
+  padding: 12px;
   border: 1px solid #dee2e6;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: box-shadow 0.2s;
 }
 
 .image-header {
@@ -227,6 +229,8 @@
   margin-bottom: 16px;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .image-number {
@@ -289,11 +293,16 @@
   border-radius: 3px;
   border: 1px solid #dee2e6;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  max-height: 140px;
+  border-radius: 8px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.10);
+  object-fit: contain;
 }
 
 .image-status {
   min-height: 30px;
   font-size: 0.9em;
+  margin: 0 2px;
 }
 
 .processing {
@@ -445,16 +454,29 @@
 
 @media (max-width: 768px) {
   .images-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 8px;
   }
   .image-card {
-    padding: 4px;
+    padding: 6px;
+    border-radius: 6px;
   }
   .image-header {
     margin-bottom: 4px;
+    gap: 4px;
   }
   .image-preview-small {
-    max-height: 60px;
+    max-height: 90px;
+    border-radius: 4px;
+  }
+  .image-actions button {
+    font-size: 0.9em;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  .generate-teams-btn {
+    font-size: 1.2em;
+    padding: 10px 0;
+    border-radius: 6px;
   }
 }

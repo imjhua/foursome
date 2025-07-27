@@ -43,7 +43,6 @@ const TeamScorecardTable: React.FC<TeamScorecardTableProps> = ({ teams, scorecar
     <>
       <div className="results-header">
         <h2>팀별 통합 스코어카드</h2>
-        <p>팀별 순위표 (동점자는 같은 순위)</p>
       </div>
 
         <div className="team-scorecard-table">
